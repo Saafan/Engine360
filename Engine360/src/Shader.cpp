@@ -1,9 +1,10 @@
-#include "Shader.h"
+#include "Renderer/Renderer.h"
 #include <iostream>
 #include <string>
 #include <fstream>
-#include <sstream>
-
+#include <unordered_map>
+#include "GL/glew.h"
+#include <gtc/type_ptr.hpp>
 
 Shader::Shader(const char* shaderPath)
 {
@@ -23,6 +24,7 @@ Shader::Shader(const char* shaderPath)
 void Shader::Bind()
 {
 	glUseProgram(programID);
+	Renderer::Get().curShader = this;
 }
 
 void Shader::GetShaderCode(std::ifstream& file)
@@ -44,11 +46,9 @@ void Shader::GetShaderCode(std::ifstream& file)
 	while (std::getline(file, line))
 		shaderData.fragmentShader += line + "\n";
 
-	std::cout << "vert: " << shaderData.vertexShader << std::endl;
-	std::cout << "frag: " << shaderData.fragmentShader << std::endl;
 }
 
-unsigned int Shader::CompileShader(std::string& srcCode, GLenum shaderType)
+unsigned int Shader::CompileShader(std::string& srcCode, unsigned int shaderType)
 {
 	unsigned int shader = glCreateShader(shaderType);
 	const GLchar* src = srcCode.c_str();
@@ -80,9 +80,31 @@ void Shader::CreateProgram()
 	glAttachShader(programID, fragShaderID);
 
 	glUseProgram(programID);
-
 	glDeleteShader(vertShaderID);
 	glDeleteShader(fragShaderID);
 	glDeleteShader(geomShaderID);
 }
 
+void Shader::SetUniform1f(const char* name, float value)
+{
+	glUniform1f(GetUniformLocation(name), value);
+}
+
+void Shader::SetUniformMat4(const char* name, glm::mat4& value)
+{
+	glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(value));
+}
+
+unsigned int Shader::GetUniformLocation(const char* name)
+{
+	static std::unordered_map<const char*, unsigned int> list;
+	
+	if (list.find(name) == list.end())
+	{
+		const unsigned int location = glGetUniformLocation(programID, name);
+		list[name] = location;
+		return location;
+	}
+	else
+		return list[name];
+}
