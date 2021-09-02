@@ -79,6 +79,9 @@ void Shader::CreateProgram()
 	glAttachShader(programID, vertShaderID);
 	glAttachShader(programID, fragShaderID);
 
+	glLinkProgram(programID);
+	glValidateProgram(programID);
+
 	glUseProgram(programID);
 	glDeleteShader(vertShaderID);
 	glDeleteShader(fragShaderID);
@@ -91,6 +94,11 @@ void Shader::SetUniform1f(const char* name, float value)
 }
 
 void Shader::SetUniformMat4(const char* name, glm::mat4& value)
+{
+	glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(value));
+}
+
+void Shader::SetUniformMat4(const char* name, glm::mat4&& value)
 {
 	glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(value));
 }

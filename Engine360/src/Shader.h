@@ -16,7 +16,9 @@ class Shader
 public:
 	Shader(const char* shaderPath);
 	void Bind();
-	unsigned int GetUniformLocation(const char* name);
+	void SetUniform1f(const char* name, float value);
+	void SetUniformMat4(const char* name, glm::mat4& value);
+	void SetUniformMat4(const char* name, glm::mat4&& value);
 
 private:
 	void GetShaderCode(std::ifstream& file);
@@ -25,7 +27,6 @@ private:
 
 	void CreateProgram();
 
-	void SetUniform1f(const char* name, float value);
-	void SetUniformMat4(const char* name, glm::mat4& value);
+	unsigned int GetUniformLocation(const char* name);
 	unsigned int programID = 0, vertShaderID = 0, fragShaderID = 0, geomShaderID = 0;
 };

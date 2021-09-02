@@ -8,8 +8,12 @@
 #include "Shader.h"
 #include "Camera.h"
 
-#define WIDTH 1280
-#define HEIGHT 720
+
+
+const int WIDTH = 1280.0f;
+const int HEIGHT = 720.0f;
+const double CAMERA_SPEED = 0.05;
+const float CAMERA_MOTION_SPEED = 0.5f;
 
 struct Type
 {
@@ -51,6 +55,7 @@ public:
 
 	//Camera
 	Camera* curCamera = nullptr;
-	double x, y;
+	glm::vec3 curCameraPos = glm::vec3(1.0f);
+	double x = 0.0, y = 0.0;
 };
 

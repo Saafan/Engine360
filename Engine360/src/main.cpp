@@ -1,9 +1,7 @@
 #include <iostream>
 #include "Renderer/Renderer.h"
-#include "Shader.h"
-#include <unordered_map>
 #include "VertexBuffer.h"
-#include <typeinfo>
+
 int main()
 {
 
@@ -17,6 +15,7 @@ int main()
 
 	if (glewInit() != GLEW_OK)
 		std::cout << "Initialization of GLEW Failed!" << std::endl;
+	glfwSetInputMode(Renderer::Get().window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	Shader shader("Shaders/main.glsl");
 	float d[] = {
@@ -25,10 +24,13 @@ int main()
 		0.5f, -0.5f, 0.0f,
 	};
 	VertexBuffer vb(&d, sizeof(d));
+	Camera c;
+	c.Bind();
+
 	vb.InsertStride<float>(3);
-	//vb.InsertStride<float>();
-	//vb.InsertStride<float>(4);
 	vb.Bind();
+	shader.Bind();
+
 	//vb.InsertStride<float>(10,10);
 	while (!glfwWindowShouldClose(*window))
 	{
@@ -39,6 +41,8 @@ int main()
 
 		//Drawing Begins here
 		glDrawArrays(GL_TRIANGLES, 0, 3);
+		Renderer::Get().curCamera->CalculateViewMatrix();
+
 		glfwSwapBuffers(*window);
 	}
 

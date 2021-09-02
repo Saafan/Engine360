@@ -1,23 +1,28 @@
 #version 330 core
 
-layout(location = 0) vec3 pos;
-layout(location = 1) vec3 normal;
-layout(location = 2) vec2 tex;
+layout(location = 0) in vec3 pos;
+//layout(location = 1) in vec3 normal;
+//layout(location = 2) in vec2 tex;
 
-out vec3 u_pos;
+out vec4 u_pos;
+
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 proj;
 
 void main()
 {
-	gl_Position = vec4(pos,1.0);
-	u_pos = pos;
+	mat4 mvp =  proj * view ;
+	gl_Position = mvp * vec4(pos,1.0);
 }
 
 
 #fragment
+#version 330 core
 
 out vec4 color;
 
 void main()
 {
-	color = vec4(0.5, 0.0 ,1.0, 1.0);
+	color = vec4(0.5, 0.0, 0.5, 1.0);
 }
