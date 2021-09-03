@@ -1,30 +1,65 @@
 #pragma once
-#include "Renderer/Renderer.h"
+
 #include <vector>
+#include "GL/glew.h"
 
- class VertexBuffer
- {
- public:
- 	VertexBuffer(const void* data, unsigned int size);
-    template<typename type> void InsertStride(int count);
+struct Type
+{
+	Type(unsigned int type, size_t size) { this->type = type; this->size = size; };
+	unsigned int type = 0;
+	size_t size = 0;
+	unsigned int count = 0;
+};
 
-    void Bind();
- 
- private:
-     unsigned int vbID = 0;
-     unsigned int vaID = 0;
-     const void* data = nullptr;
-     unsigned int size = 0;
-     void AttributesBind();
-     size_t GetStrideSize();
-     std::vector<Type> strides;
- };
 
- template<typename type>
- void VertexBuffer::InsertStride(int count)
- {
-	 Type strideDetails = Renderer::ConvertTypeToGLType<type>();
-	 strideDetails.count = count;
-	 strides.emplace_back(strideDetails);
+class VertexBuffer
+{
+public:
+	VertexBuffer(const void* data, size_t size);
+	VertexBuffer(const void* data, size_t size, const void* indicies, size_t indicesSize);
+	template<typename type> void InsertStride(int count);
+	void Bind();
 
- }
+	void SetVertexData(const void* data, size_t size);
+	void SetIndiciesData(const void* data, size_t size);
+
+private:
+	unsigned int vbID = 0;
+	unsigned int vaID = 0;
+	unsigned int ibID = 0;
+
+	const void* data = nullptr;
+	size_t size = 0;
+
+	const void* indices = nullptr;
+	size_t indicesSize = 0;
+
+	void BindData();
+	void AttributesBind();
+	size_t GetStrideSize();
+	std::vector<Type> strides;
+};
+
+template <typename type>
+static Type ConvertTypeToGLType()
+{
+	if (typeid(type) == typeid(float)) return Type(GL_FLOAT, sizeof(type));
+	if (typeid(type) == typeid(unsigned int)) return Type(GL_UNSIGNED_INT, sizeof(type));
+	if (typeid(type) == typeid(int)) return Type(GL_INT, sizeof(type));
+	if (typeid(type) == typeid(double)) return Type(GL_DOUBLE, sizeof(type));
+	if (typeid(type) == typeid(short)) return Type(GL_SHORT, sizeof(type));
+	if (typeid(type) == typeid(unsigned short)) return Type(GL_UNSIGNED_SHORT, sizeof(type));
+	if (typeid(type) == typeid(char)) return Type(GL_BYTE, sizeof(type));
+	if (typeid(type) == typeid(unsigned char)) return Type(GL_UNSIGNED_BYTE, sizeof(type));
+	return Type(GL_INT, 4);
+}
+
+
+template<typename type>
+void VertexBuffer::InsertStride(int count)
+{
+	Type strideDetails = ConvertTypeToGLType<type>();
+	strideDetails.count = count;
+	strides.emplace_back(strideDetails);
+
+}

@@ -5,7 +5,10 @@
 class Camera {
 public:
 	void Bind();
-	void CalculateViewMatrix();
+
+	//Calculate and Update View Matrix to Shader
+	void Shoot();
+
 	
 private:
 	glm::mat4 view;

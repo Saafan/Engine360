@@ -3,10 +3,10 @@
 #include "GLFW/glfw3.h"
 #include "gtc/matrix_transform.hpp"
 
-glm::vec3 dir;
-glm::vec3& cameraPos = Renderer::Get().curCameraPos;
+glm::dvec3 dir;
+glm::dvec3& cameraPos = Renderer::Get().curCameraPos;
 
-glm::vec2&& GetDeltaMouse()
+glm::vec2 GetDeltaMouse()
 {
 	double* newX = &(Renderer::Get().x);
 	double* newY = &(Renderer::Get().y);
@@ -25,7 +25,7 @@ void Camera::Bind()
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	glm::vec3 cameraCross = glm::cross(dir, glm::vec3(0.0f, 1.0f, 0.0f));
+	glm::dvec3 cameraCross = glm::cross(dir, glm::dvec3(0.0f, 1.0f, 0.0f));
 
 	if (key == GLFW_KEY_A && action == GLFW_PRESS)
 		cameraPos -= cameraCross * CAMERA_MOTION_SPEED;
@@ -37,7 +37,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		cameraPos -= dir * CAMERA_MOTION_SPEED;
 }
 
-void Camera::CalculateViewMatrix()
+void Camera::Shoot()
 {
 	glm::vec2 delt = GetDeltaMouse();
 
@@ -50,8 +50,7 @@ void Camera::CalculateViewMatrix()
 
 	glfwSetKeyCallback(Renderer::Get().window, key_callback);
 
-	view = glm::lookAt(cameraPos, cameraPos + dir, glm::vec3(0.0f, 1.0f, 0.0f));
-
+	view = glm::lookAt(cameraPos, cameraPos + dir, glm::dvec3(0.0f, 1.0f, 0.0f));
 
 	Renderer::Get().curShader->SetUniformMat4("view", view);
 }

@@ -113,6 +113,6 @@ unsigned int Shader::GetUniformLocation(const char* name)
 		list[name] = location;
 		return location;
 	}
-	else
-		return list[name];
+
+	return list[name];
 }
