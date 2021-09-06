@@ -19,6 +19,7 @@ public:
 	VertexBuffer(const void* data, size_t size, const void* indicies, size_t indicesSize);
 	template<typename type> void InsertStride(int count);
 	void Bind();
+	void BindData();
 
 	void SetVertexData(const void* data, size_t size);
 	void SetIndiciesData(const void* data, size_t size);
@@ -34,7 +35,6 @@ private:
 	const void* indices = nullptr;
 	size_t indicesSize = 0;
 
-	void BindData();
 	void AttributesBind();
 	size_t GetStrideSize();
 	std::vector<Type> strides;

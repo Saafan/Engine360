@@ -15,6 +15,10 @@ const int HEIGHT = 720;
 const double CAMERA_SPEED = 0.05;
 const double CAMERA_MOTION_SPEED = 0.5f;
 
+#define SHADER_MODEL "model"
+#define SHADER_VIEW "view"
+#define SHADER_PROJ "proj"
+
 class Renderer
 {
 public:
@@ -36,7 +40,7 @@ public:
 
 	//Camera
 	Camera* curCamera = nullptr;
-	glm::dvec3 curCameraPos = glm::vec3(1.0f);
+	glm::dvec3 curCameraPos = glm::vec3(0.0f, 0.5f, 1.5f);
 	double x = 0.0, y = 0.0;
 
 	//Models

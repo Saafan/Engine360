@@ -20,9 +20,14 @@ int main()
 	Camera c;
 	c.Bind();
 	
-	//Model::Cube cube(1.0f, 1.0f, 1.0f);
+
+	Model::Cube cube(0.2f, 0.2f, 0.2f);
+	Model::Cube cube2(0.2f, 0.2f, 0.2f);
 	Model::Cylinder cylinder(1.0f, 3.0f);
 	shader.Bind();
+
+	//cube.SetPosition(0,0,0);
+	//cube2.SetPosition(0,1,0);
 
 	while (!glfwWindowShouldClose(window))
 	{

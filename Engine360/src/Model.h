@@ -12,13 +12,17 @@ namespace Model
 		void Render();
 		bool visible = true;
 
+		void SetPosition(glm::mat4 value);
+		void SetPosition(float v1, float v2, float v3);
+
 	protected:
 		Model() ;
 		~Model();
 		void SetDrawAttributes(bool indexed, unsigned int count, unsigned int drawTarget);
 
 		VertexBuffer* vb = nullptr;
-		glm::mat4 model;
+		glm::mat4 model = glm::mat4(1.0f);
+		glm::mat4 oldModel = glm::mat4(1.0f);
 
 		bool indexed = false;
 		unsigned int count = 0;
@@ -27,7 +31,7 @@ namespace Model
 	};
 
 	struct Cube : public Model {
-		Cube(int length, int width, int height, bool visible = true);
+		Cube(float length, float width, float height, bool visible = true);
 	};
 
 	struct Cylinder : public Model {

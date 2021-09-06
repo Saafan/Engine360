@@ -19,13 +19,6 @@ VertexBuffer::VertexBuffer(const void* data, size_t size, const void* indices, s
 
 void VertexBuffer::Bind()
 {
-	static bool first = true;
-	if (first)
-	{
-		BindData();
-		first = false;
-	}
-	else
 		glBindVertexArray(vaID);
 }
 

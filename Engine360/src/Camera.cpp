@@ -8,17 +8,25 @@ glm::dvec3& cameraPos = Renderer::Get().curCameraPos;
 
 glm::vec2 GetDeltaMouse()
 {
+
 	double* newX = &(Renderer::Get().x);
 	double* newY = &(Renderer::Get().y);
 	double oldX = *newX, oldY = *newY;
 	glfwGetCursorPos(Renderer::Get().window, newX, newY);
+
+	static bool first = true;
+	if (first)
+	{
+		first = false;
+		return glm::vec2(0.0f);
+	}
 	return glm::vec2((*newX - oldX), (*newY - oldY));
 }
 
 void Camera::Bind()
 {
 	glm::mat4 proj = glm::perspective(glm::radians(60.0f), (float)WIDTH / (float)HEIGHT, 0.0001f, 1000.0f);
-	Renderer::Get().curShader->SetUniformMat4("proj", proj);
+	Renderer::Get().curShader->SetUniformMat4(SHADER_PROJ, proj);
 	Renderer::Get().curCamera = this;
 }
 
@@ -47,10 +55,11 @@ void Camera::Shoot()
 	dir.x = glm::cos(glm::radians(yaw)) * glm::cos(glm::radians(pitch));
 	dir.y = glm::sin(glm::radians(pitch));
 	dir.z = glm::sin(glm::radians(yaw)) * glm::cos(glm::radians(pitch));
+	dir = glm::normalize(dir);
 
 	glfwSetKeyCallback(Renderer::Get().window, key_callback);
 
 	view = glm::lookAt(cameraPos, cameraPos + dir, glm::dvec3(0.0f, 1.0f, 0.0f));
 
-	Renderer::Get().curShader->SetUniformMat4("view", view);
+	Renderer::Get().curShader->SetUniformMat4(SHADER_VIEW, view);
 }
