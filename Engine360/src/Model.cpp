@@ -66,7 +66,10 @@ Model::Cylinder::Cylinder(float radius, float height, int sides, bool visible)
 	std::vector<glm::vec3> vertices;
 	vertices.reserve((360 / sides) * 2);
 	vertices.emplace_back(0.0f, height / 2.0f, 0.0f);
+	vertices.emplace_back(0.0f, 1.0f, 0.0f);
+
 	vertices.emplace_back(0.0f, -(height / 2.0f), 0.0f);
+	vertices.emplace_back(0.0f, -1.0f, 0.0f);
 
 	std::vector<unsigned int> indices;
 	indices.reserve((360 / sides) * 4);
@@ -75,9 +78,17 @@ Model::Cylinder::Cylinder(float radius, float height, int sides, bool visible)
 	for (float i = 0; i <= 360; i += 360.0f / sides)
 	{
 		glm::vec3 vertTop(glm::cos(glm::radians(i)), height / 2.0f, glm::sin(glm::radians(i)));
+		glm::vec3 normalTop(glm::normalize(vertTop - vertices.at(0)));
+
 		glm::vec3 vertBottom(glm::cos(glm::radians(i)), -height / 2.0f, glm::sin(glm::radians(i)));
+		glm::vec3 normalBottom(vertBottom - vertices.at(1));
+
 		vertices.emplace_back(vertTop * radius);
+		vertices.emplace_back(normalTop);
+
 		vertices.emplace_back(vertBottom * radius);
+		vertices.emplace_back(normalBottom);
+
 		if (i != 0)
 		{
 			//Cylinder Sides
@@ -89,19 +100,18 @@ Model::Cylinder::Cylinder(float radius, float height, int sides, bool visible)
 			if (i < 360)
 			{
 
-			//Cylinder Cap Top
-			indices.emplace_back(counter);
-			indices.emplace_back(counter + 2);
-			indices.emplace_back(counter + 4);
-			indices.emplace_back(0);
+				//Cylinder Cap Top
+				indices.emplace_back(counter);
+				indices.emplace_back(counter + 2);
+				indices.emplace_back(counter + 4);
+				indices.emplace_back(0);
 
-			//Cylinder Cap Bottom
-			indices.emplace_back(counter + 1);
-			indices.emplace_back(counter + 3);
-			indices.emplace_back(counter + 5);
-			indices.emplace_back(1);
+				//Cylinder Cap Bottom
+				indices.emplace_back(counter + 1);
+				indices.emplace_back(counter + 3);
+				indices.emplace_back(counter + 5);
+				indices.emplace_back(1);
 			}
-
 
 			counter += 2;
 		}
@@ -111,7 +121,10 @@ Model::Cylinder::Cylinder(float radius, float height, int sides, bool visible)
 	indices.emplace_back(2);
 	indices.emplace_back(3);
 
-	vb = new VertexBuffer(&vertices.at(0), sizeof(float) * vertices.size() * 3, &indices.at(0), sizeof(unsigned int) * indices.size());
+	const int NUM_OF_STRIDES = 2;
+
+	vb = new VertexBuffer(&vertices.at(0), sizeof(float) * vertices.size() * 3 * NUM_OF_STRIDES, &indices.at(0), sizeof(unsigned int) * indices.size());
+	vb->InsertStride<float>(3);
 	vb->InsertStride<float>(3);
 	vb->BindData();
 
