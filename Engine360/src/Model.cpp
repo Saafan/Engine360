@@ -77,7 +77,11 @@ Model::Cylinder::Cylinder(float radius, float height, int sides, bool visible)
 	for (float i = 0; i <= 360; i += 360.0f / sides)
 	{
 		glm::vec3 vertTop(glm::cos(glm::radians(i)), height / 2.0f, glm::sin(glm::radians(i)));
+		glm::vec3 normalTop(glm::normalize(vertTop - vertices.at(0)));
+
 		glm::vec3 vertBottom(glm::cos(glm::radians(i)), -height / 2.0f, glm::sin(glm::radians(i)));
+		glm::vec3 normalBottom(vertBottom - vertices.at(1));
+
 		vertices.emplace_back(vertTop * radius);
 		vertices.emplace_back(vertTop - vertices.at(0));
 		vertices.emplace_back(vertBottom * radius);
@@ -93,19 +97,18 @@ Model::Cylinder::Cylinder(float radius, float height, int sides, bool visible)
 			if (i < 360)
 			{
 
-			//Cylinder Cap Top
-			indices.emplace_back(counter);
-			indices.emplace_back(counter + 2);
-			indices.emplace_back(counter + 4);
-			indices.emplace_back(0);
+				//Cylinder Cap Top
+				indices.emplace_back(counter);
+				indices.emplace_back(counter + 2);
+				indices.emplace_back(counter + 4);
+				indices.emplace_back(0);
 
-			//Cylinder Cap Bottom
-			indices.emplace_back(counter + 1);
-			indices.emplace_back(counter + 3);
-			indices.emplace_back(counter + 5);
-			indices.emplace_back(1);
+				//Cylinder Cap Bottom
+				indices.emplace_back(counter + 1);
+				indices.emplace_back(counter + 3);
+				indices.emplace_back(counter + 5);
+				indices.emplace_back(1);
 			}
-
 
 			counter += 2;
 		}
