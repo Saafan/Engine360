@@ -61,5 +61,7 @@ void Camera::Shoot()
 
 	view = glm::lookAt(cameraPos, cameraPos + dir, glm::dvec3(0.0f, 1.0f, 0.0f));
 
+	Renderer::Get().UpdateCameraPosition();
+
 	Renderer::Get().curShader->SetUniformMat4(SHADER_VIEW, view);
 }

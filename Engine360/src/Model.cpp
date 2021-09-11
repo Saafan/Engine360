@@ -66,7 +66,9 @@ Model::Cylinder::Cylinder(float radius, float height, int sides, bool visible)
 	std::vector<glm::vec3> vertices;
 	vertices.reserve((360 / sides) * 2);
 	vertices.emplace_back(0.0f, height / 2.0f, 0.0f);
+	vertices.emplace_back(0.0f, 1.0f, 0.0f);
 	vertices.emplace_back(0.0f, -(height / 2.0f), 0.0f);
+	vertices.emplace_back(0.0f, -(1.0f), 0.0f);
 
 	std::vector<unsigned int> indices;
 	indices.reserve((360 / sides) * 4);
@@ -77,7 +79,9 @@ Model::Cylinder::Cylinder(float radius, float height, int sides, bool visible)
 		glm::vec3 vertTop(glm::cos(glm::radians(i)), height / 2.0f, glm::sin(glm::radians(i)));
 		glm::vec3 vertBottom(glm::cos(glm::radians(i)), -height / 2.0f, glm::sin(glm::radians(i)));
 		vertices.emplace_back(vertTop * radius);
+		vertices.emplace_back(vertTop - vertices.at(0));
 		vertices.emplace_back(vertBottom * radius);
+		vertices.emplace_back(vertBottom - vertices.at(1));
 		if (i != 0)
 		{
 			//Cylinder Sides
@@ -111,7 +115,8 @@ Model::Cylinder::Cylinder(float radius, float height, int sides, bool visible)
 	indices.emplace_back(2);
 	indices.emplace_back(3);
 
-	vb = new VertexBuffer(&vertices.at(0), sizeof(float) * vertices.size() * 3, &indices.at(0), sizeof(unsigned int) * indices.size());
+	vb = new VertexBuffer(&vertices.at(0), sizeof(float) * vertices.size() * 6, &indices.at(0), sizeof(unsigned int) * indices.size());
+	vb->InsertStride<float>(3);
 	vb->InsertStride<float>(3);
 	vb->BindData();
 

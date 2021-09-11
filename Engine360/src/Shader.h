@@ -17,6 +17,8 @@ public:
 	Shader(const char* shaderPath);
 	void Bind();
 	void SetUniform1f(const char* name, float value);
+	void SetUniform3f(const char* name, float v0, float v1, float v2);
+	void SetUniform3f(const char* name, glm::vec3 value);
 	void SetUniformMat4(const char* name, glm::mat4& value);
 	void SetUniformMat4(const char* name, glm::mat4&& value);
 

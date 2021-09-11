@@ -19,6 +19,8 @@ const double CAMERA_MOTION_SPEED = 0.5f;
 #define SHADER_VIEW "view"
 #define SHADER_PROJ "proj"
 
+#define CAMERA_POS "cameraPos"
+
 class Renderer
 {
 public:
@@ -26,6 +28,7 @@ public:
 	Renderer(const Renderer&) = delete;
 
 	void RenderModels();
+	void UpdateCameraPosition();
 
 	static Renderer& Get() {
 		static Renderer renderer;
@@ -47,6 +50,10 @@ public:
 	std::vector<Model::Model*> models;
 };
 
+inline void Renderer::UpdateCameraPosition()
+{
+	curShader->SetUniform3f(CAMERA_POS, curCameraPos);
+}
 
 inline void Renderer::RenderModels()
 {
