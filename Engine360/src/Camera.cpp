@@ -45,6 +45,16 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		cameraPos -= dir * CAMERA_MOTION_SPEED;
 }
 
+void Camera::Shoot2D()
+{
+	glm::mat4 ortho = glm::ortho(0.01f, (float)WIDTH, 0.01f, (float)HEIGHT, 0.001f, 1000.0f);
+	glm::mat4 view(1.0f);
+
+	Renderer::Get().UpdateCameraPosition();
+	Renderer::Get().curShader->SetUniformMat4(SHADER_PROJ, glm::mat4(1.0f));
+	Renderer::Get().curShader->SetUniformMat4(SHADER_VIEW, view);
+}
+
 void Camera::Shoot()
 {
 	glm::vec2 delt = GetDeltaMouse();

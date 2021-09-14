@@ -7,6 +7,7 @@ public:
 	void Bind();
 
 	//Calculate and Update View Matrix to Shader
+	void Shoot2D();
 	void Shoot();
 
 	
