@@ -17,9 +17,11 @@ class VertexBuffer
 public:
 	VertexBuffer(const void* data, size_t size);
 	VertexBuffer(const void* data, size_t size, const void* indicies, size_t indicesSize);
+	VertexBuffer(std::vector<auto> arrayOfData);
 	template<typename type> void InsertStride(int count);
 	void Bind();
-	void BindData();
+	void BindDataInterleaved();
+	void BindDataQeued();
 
 	void SetVertexData(const void* data, size_t size);
 	void SetIndiciesData(const void* data, size_t size);
@@ -35,7 +37,10 @@ private:
 	const void* indices = nullptr;
 	size_t indicesSize = 0;
 
-	void AttributesBind();
+	bool interleaved = true;
+
+	void AttributesBindInterleaved();
+	void AttributesBindQueued();
 	size_t GetStrideSize();
 	std::vector<Type> strides;
 };

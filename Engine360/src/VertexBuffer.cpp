@@ -1,5 +1,10 @@
 #include "VertexBuffer.h"
 
+VertexBuffer::VertexBuffer(std::vector<float>[] arrayOfData)
+{
+
+}
+
 VertexBuffer::VertexBuffer(const void* data, size_t size)
 {
 	this->data = data;
@@ -22,7 +27,7 @@ void VertexBuffer::Bind()
 		glBindVertexArray(vaID);
 }
 
-void VertexBuffer::BindData()
+void VertexBuffer::BindDataInterleaved()
 {
 	glBindVertexArray(vaID);
 
@@ -35,7 +40,12 @@ void VertexBuffer::BindData()
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesSize, indices, GL_STATIC_DRAW);
 	}
 
-	AttributesBind();
+	AttributesBindInterleaved();
+}
+
+void VertexBuffer::BindDataQeued()
+{
+	
 }
 
 void VertexBuffer::SetVertexData(const void* data, size_t size)
@@ -50,7 +60,7 @@ void VertexBuffer::SetIndiciesData(const void* IndicesData, size_t IndicesSize)
 	this->size = IndicesSize;
 }
 
-void VertexBuffer::AttributesBind()
+void VertexBuffer::AttributesBindInterleaved()
 {
 	unsigned int offset = 0;
 	unsigned int strideSize = GetStrideSize();
@@ -61,6 +71,11 @@ void VertexBuffer::AttributesBind()
 		glVertexAttribPointer(i, curStride.count, curStride.type, GL_FALSE, strideSize, (const void*)offset);
 		offset += curStride.count * curStride.size;
 	}
+}
+
+void VertexBuffer::AttributesBindQueued()
+{
+	
 }
 
 size_t VertexBuffer::GetStrideSize()

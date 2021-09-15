@@ -82,6 +82,13 @@ Model::Cylinder::Cylinder(float radius, float height, int sides, bool visible)
 		glm::vec3 vertBottom(glm::cos(glm::radians(i)), -height / 2.0f, glm::sin(glm::radians(i)));
 		glm::vec3 normalBottom(glm::normalize(vertBottom - vertices.at(1)));
 
+		glm::vec3 vertCapTop(glm::cos(glm::radians(i)), height / 2.0f, glm::sin(glm::radians(i)));
+		glm::vec3 normalCapTop2(glm::normalize(glm::vec3(0.0f, 1.0f, 0.0f)));
+
+		glm::vec3 vertCapBottom(glm::cos(glm::radians(i)), -height / 2.0f, glm::sin(glm::radians(i)));
+		glm::vec3 normalCapTop(glm::normalize(glm::vec3(0.0f, -1.0f, 0.0f)));
+
+		//glBufferSubData(GL_TRIANGLES, );
 		vertices.emplace_back(vertTop * radius);
 		vertices.emplace_back(normalTop);
 		vertices.emplace_back(vertBottom * radius);
@@ -91,67 +98,22 @@ Model::Cylinder::Cylinder(float radius, float height, int sides, bool visible)
 			//Cylinder Sides
 			indices.emplace_back(counter);
 			indices.emplace_back(counter + 1);
-			indices.emplace_back(counter + 3);
 			indices.emplace_back(counter + 2);
 
-			if (i < 360)
-			{
-
-				////Cylinder Cap Top
-				//indices.emplace_back(counter);
-				//indices.emplace_back(counter + 2);
-				//indices.emplace_back(counter + 4);
-				//indices.emplace_back(0);
-				//
-				////Cylinder Cap Bottom
-				//indices.emplace_back(counter + 1);
-				//indices.emplace_back(counter + 3);
-				//indices.emplace_back(counter + 5);
-				//indices.emplace_back(1);
-			}
-
-			counter += 2;
-		}
-	}
-	indices.emplace_back(counter++);
-	indices.emplace_back(counter++);
-	indices.emplace_back(2);
-	indices.emplace_back(3);
-	
-	//Create Cylinder Cap
-	for (float i = 0; i <= 360; i += 360.0f / sides)
-	{
-		glm::vec3 vertTop(glm::cos(glm::radians(i)), height / 2.0f, glm::sin(glm::radians(i)));
-		glm::vec3 normalTop(glm::vec3(0.0f, 1.0f, 0.0f));
-
-		glm::vec3 vertBottom(glm::cos(glm::radians(i)), -height / 2.0f, glm::sin(glm::radians(i)));
-		glm::vec3 normalBottom(glm::vec3(0.0f, -1.0f, 0.0f));
-
-		vertices.emplace_back(vertTop * radius);
-		vertices.emplace_back(normalTop);
-		vertices.emplace_back(vertBottom * radius);
-		vertices.emplace_back(normalBottom);
-		if (i != 0)
-		{
-			//Cylinder Sides
-			indices.emplace_back(counter);
-			indices.emplace_back(0);
 			indices.emplace_back(counter + 1);
-			indices.emplace_back(0);
+			indices.emplace_back(counter + 2);
+			indices.emplace_back(counter + 3);
 
-			
-
-			counter += 2;
+			counter += 4;
 		}
 	}
-
-
+	
 	vb = new VertexBuffer(&vertices.at(0), sizeof(float) * vertices.size() * 6, &indices.at(0), sizeof(unsigned int) * indices.size());
 	vb->InsertStride<float>(3);
 	vb->InsertStride<float>(3);
 	vb->BindData();
 
-	SetDrawAttributes(true, indices.size(), GL_QUADS);
+	SetDrawAttributes(true, indices.size(), GL_TRIANGLES);
 
 	this->visible = visible;
 }
