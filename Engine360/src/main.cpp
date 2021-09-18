@@ -30,6 +30,34 @@ int main()
 	//cube.SetPosition(0,-3,0);
 	//cube2.SetPosition(0,3,0);
 
+	float cube[] =
+	{
+		//Position
+		-0.5f , -0.5f , -0.5f,
+		 0.5f , -0.5f , -0.5f,
+		 0.5f ,  0.5f , -0.5f,
+		 0.5f ,  0.5f , -0.5f,
+		-0.5f ,  0.5f , -0.5f,
+		-0.5f , -0.5f , -0.5f,
+
+		//Normals
+		0.0f,  0.0f, -1.0f,
+		0.0f,  0.0f, -1.0f,
+		0.0f,  0.0f, -1.0f,
+		0.0f,  0.0f, -1.0f,
+		0.0f,  0.0f, -1.0f,
+		0.0f,  0.0f, -1.0f,
+
+		//UV Texturing
+		0.0f,  0.0f,
+		1.0f,  0.0f,
+		1.0f,  1.0f,
+		1.0f,  1.0f,
+		0.0f,  1.0f,
+		0.0f,  0.0f,
+	};
+
+
 	while (!glfwWindowShouldClose(window))
 	{
 		glfwPollEvents();

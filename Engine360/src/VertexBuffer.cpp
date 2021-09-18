@@ -1,38 +1,39 @@
 #include "VertexBuffer.h"
 
-VertexBuffer::VertexBuffer(std::vector<float>[] arrayOfData)
-{
-
-}
-
-VertexBuffer::VertexBuffer(const void* data, size_t size)
+VertexBuffer::VertexBuffer(const void* data, size_t size, bool interlaved)
 {
 	this->data = data;
 	this->size = size;
 
 	glGenVertexArrays(1, &vaID);
 	glGenBuffers(1, &vbID);
+	this->interleaved = interleaved;
 }
 
-VertexBuffer::VertexBuffer(const void* data, size_t size, const void* indices, size_t indicesSize) : VertexBuffer(data, size)
+VertexBuffer::VertexBuffer(const void* data, size_t size, const void* indices, size_t indicesSize, bool interleaved) : VertexBuffer(data, size)
 {
 	this->indices = indices;
 	this->indicesSize = indicesSize;
 
 	glGenBuffers(1, &ibID);
+	this->interleaved = interleaved;
 }
 
 void VertexBuffer::Bind()
 {
-		glBindVertexArray(vaID);
+	glBindVertexArray(vaID);
 }
 
 void VertexBuffer::BindDataInterleaved()
 {
 	glBindVertexArray(vaID);
-
 	glBindBuffer(GL_ARRAY_BUFFER, vbID);
 	glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
+
+	if (interleaved)
+	{
+		//#TODO Change data layout
+	}
 
 	if (ibID != 0)
 	{
@@ -40,12 +41,7 @@ void VertexBuffer::BindDataInterleaved()
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesSize, indices, GL_STATIC_DRAW);
 	}
 
-	AttributesBindInterleaved();
-}
-
-void VertexBuffer::BindDataQeued()
-{
-	
+	AttributesBind();
 }
 
 void VertexBuffer::SetVertexData(const void* data, size_t size)
@@ -60,7 +56,7 @@ void VertexBuffer::SetIndiciesData(const void* IndicesData, size_t IndicesSize)
 	this->size = IndicesSize;
 }
 
-void VertexBuffer::AttributesBindInterleaved()
+void VertexBuffer::AttributesBind()
 {
 	unsigned int offset = 0;
 	unsigned int strideSize = GetStrideSize();
@@ -73,15 +69,11 @@ void VertexBuffer::AttributesBindInterleaved()
 	}
 }
 
-void VertexBuffer::AttributesBindQueued()
-{
-	
-}
 
 size_t VertexBuffer::GetStrideSize()
 {
 	size_t size = 0;
-	for (const auto & stride : strides)
+	for (const auto& stride : strides)
 		size += stride.size * stride.count;
 
 	return size;

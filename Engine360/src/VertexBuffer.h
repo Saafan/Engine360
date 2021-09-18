@@ -15,13 +15,11 @@ struct Type
 class VertexBuffer
 {
 public:
-	VertexBuffer(const void* data, size_t size);
-	VertexBuffer(const void* data, size_t size, const void* indicies, size_t indicesSize);
-	VertexBuffer(std::vector<auto> arrayOfData);
+	VertexBuffer(const void* data, size_t size, bool interlaved = true);
+	VertexBuffer(const void* data, size_t size, const void* indicies, size_t indicesSize, bool interleaved = true);
 	template<typename type> void InsertStride(int count);
 	void Bind();
 	void BindDataInterleaved();
-	void BindDataQeued();
 
 	void SetVertexData(const void* data, size_t size);
 	void SetIndiciesData(const void* data, size_t size);
@@ -37,10 +35,11 @@ private:
 	const void* indices = nullptr;
 	size_t indicesSize = 0;
 
+	std::vector<std::pair<const void*, Type>>* arrayOfData = nullptr;
+
 	bool interleaved = true;
 
-	void AttributesBindInterleaved();
-	void AttributesBindQueued();
+	void AttributesBind();
 	size_t GetStrideSize();
 	std::vector<Type> strides;
 };
