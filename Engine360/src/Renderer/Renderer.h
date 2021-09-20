@@ -10,8 +10,8 @@
 #include "Camera.h"
 #include "Model.h"
 
-const int WIDTH = 1280;
-const int HEIGHT = 720;
+const int WIDTH = 1920;
+const int HEIGHT = 1080;
 const double CAMERA_SPEED = 0.05;
 const double CAMERA_MOTION_SPEED = 0.5f;
 

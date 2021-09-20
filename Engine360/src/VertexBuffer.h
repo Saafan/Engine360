@@ -8,6 +8,7 @@ struct Type
 	Type(unsigned int type, size_t size) { this->type = type; this->size = size; };
 	unsigned int type = 0;
 	size_t size = 0;
+	size_t elementsCount = 0;
 	unsigned int count = 0;
 };
 
@@ -18,8 +19,9 @@ public:
 	VertexBuffer(const void* data, size_t size, bool interlaved = true);
 	VertexBuffer(const void* data, size_t size, const void* indicies, size_t indicesSize, bool interleaved = true);
 	template<typename type> void InsertStride(int count);
+	template<typename type, unsigned int elementsCount> void InsertStride(int count);
 	void Bind();
-	void BindDataInterleaved();
+	void BindData();
 
 	void SetVertexData(const void* data, size_t size);
 	void SetIndiciesData(const void* data, size_t size);
@@ -34,8 +36,6 @@ private:
 
 	const void* indices = nullptr;
 	size_t indicesSize = 0;
-
-	std::vector<std::pair<const void*, Type>>* arrayOfData = nullptr;
 
 	bool interleaved = true;
 
@@ -66,4 +66,13 @@ void VertexBuffer::InsertStride(int count)
 	strideDetails.count = count;
 	strides.emplace_back(strideDetails);
 
+};
+
+template<typename type, unsigned int elementCount>
+void VertexBuffer::InsertStride(int count)
+{
+	Type strideDetails = ConvertTypeToGLType<type>();
+	strideDetails.count = count;
+	strideDetails.elementsCount = elementCount;
+	strides.emplace_back(strideDetails);
 }
