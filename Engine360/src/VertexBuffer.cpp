@@ -1,6 +1,6 @@
 #include "VertexBuffer.h"
 
-VertexBuffer::VertexBuffer(const void* data, size_t size, bool interlaved)
+VertexBuffer::VertexBuffer(const void* data, size_t size, bool interleaved)
 {
 	this->data = data;
 	this->size = size;
@@ -38,7 +38,7 @@ void VertexBuffer::BindData()
 		for (const auto& stride : strides)
 		{
 			const size_t strideSize = stride.elementsCount * stride.size;
-			unsigned int offsetSize = (size_t)data + offset;
+			const unsigned int offsetSize = (size_t)data + offset;
 			glBufferSubData(GL_ARRAY_BUFFER, offset, strideSize, (const void*)offsetSize);
 			offset += strideSize;
 		}
@@ -82,8 +82,10 @@ void VertexBuffer::AttributesBind()
 		for (size_t i = 0; i < strides.size(); i++)
 		{
 			const Type& curStride = strides.at(i);
-			glVertexAttribPointer(i, curStride.count, curStride.type, GL_FALSE, curStride.count * curStride.size, (void*)offset);
-			offset += curStride.size * curStride.elementsCount;
+			const size_t strideSize = curStride.count * curStride.size;
+			glEnableVertexAttribArray(i);
+			glVertexAttribPointer(i, curStride.count, curStride.type, GL_FALSE, strideSize, (const void*)offset);
+			offset += curStride.elementsCount * curStride.size;
 		}
 }
 

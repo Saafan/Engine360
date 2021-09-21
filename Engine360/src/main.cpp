@@ -164,13 +164,14 @@ int main()
 
 	while (!glfwWindowShouldClose(window))
 	{
+
 		glfwPollEvents();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.2f, 0.5f, 0.8f, 1.0f);
 		glEnable(GL_DEPTH_TEST);
 
 		//Drawing Begins here
-		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glDrawArrays(GL_TRIANGLES, 0, 15);
 		Renderer::Get().curCamera->Shoot();
 		Renderer::Get().RenderModels();
 		Renderer::Get().curShader->SetUniform3f("lightPos", Renderer::Get().curCameraPos);

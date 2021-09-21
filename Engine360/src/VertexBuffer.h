@@ -16,7 +16,7 @@ struct Type
 class VertexBuffer
 {
 public:
-	VertexBuffer(const void* data, size_t size, bool interlaved = true);
+	VertexBuffer(const void* data, size_t size, bool interleaved = true);
 	VertexBuffer(const void* data, size_t size, const void* indicies, size_t indicesSize, bool interleaved = true);
 	template<typename type> void InsertStride(int count);
 	template<typename type, unsigned int elementsCount> void InsertStride(int count);
