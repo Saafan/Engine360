@@ -28,11 +28,9 @@ void VertexBuffer::BindData()
 {
 	glBindVertexArray(vaID);
 	glBindBuffer(GL_ARRAY_BUFFER, vbID);
-	if (interleaved)
-	{
-		glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
-	}
-	else
+
+	glBufferData(GL_ARRAY_BUFFER, size, interleaved ? data : 0, GL_STATIC_DRAW);
+	if (!interleaved)
 	{
 		size_t offset = 0;
 		for (const auto& stride : strides)
@@ -67,30 +65,18 @@ void VertexBuffer::SetIndiciesData(const void* IndicesData, size_t IndicesSize)
 void VertexBuffer::AttributesBind()
 {
 	unsigned int offset = 0;
-	if (interleaved)
+	for (size_t i = 0; i < strides.size(); i++)
 	{
-		unsigned int strideSize = GetStrideSize();
-		for (size_t i = 0; i < strides.size(); i++)
-		{
-			const Type& curStride = strides.at(i);
-			glEnableVertexAttribArray(i);
-			glVertexAttribPointer(i, curStride.count, curStride.type, GL_FALSE, strideSize, (const void*)offset);
-			offset += curStride.count * curStride.size;
-		}
+		const Type& curStride = strides.at(i);
+		const unsigned int strideSize = interleaved ? GetStrideSize() : curStride.count * curStride.size;
+		glEnableVertexAttribArray(i);
+		glVertexAttribPointer(i, curStride.count, curStride.type, GL_FALSE, strideSize, (const void*)offset);
+		offset += (interleaved ? curStride.count : curStride.elementsCount) * curStride.size;
 	}
-	else
-		for (size_t i = 0; i < strides.size(); i++)
-		{
-			const Type& curStride = strides.at(i);
-			const size_t strideSize = curStride.count * curStride.size;
-			glEnableVertexAttribArray(i);
-			glVertexAttribPointer(i, curStride.count, curStride.type, GL_FALSE, strideSize, (const void*)offset);
-			offset += curStride.elementsCount * curStride.size;
-		}
 }
 
 
-size_t VertexBuffer::GetStrideSize()
+const size_t VertexBuffer::GetStrideSize()
 {
 	size_t size = 0;
 	for (const auto& stride : strides)

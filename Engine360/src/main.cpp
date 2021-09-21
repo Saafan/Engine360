@@ -1,137 +1,5 @@
 #include "Renderer/Renderer.h"
 
-float cube[] =
-{
--0.5f , -0.5f , -0.5f , 
- 0.5f , -0.5f , -0.5f , 
- 0.5f ,  0.5f , -0.5f , 
- 0.5f ,  0.5f , -0.5f , 
--0.5f ,  0.5f , -0.5f , 
--0.5f , -0.5f , -0.5f , 
-						
--0.5f , -0.5f ,  0.5f , 
- 0.5f , -0.5f ,  0.5f , 
- 0.5f ,  0.5f ,  0.5f , 
- 0.5f ,  0.5f ,  0.5f , 
--0.5f ,  0.5f ,  0.5f , 
--0.5f , -0.5f ,  0.5f , 
-						
--0.5f ,  0.5f ,  0.5f , 
--0.5f ,  0.5f , -0.5f , 
--0.5f , -0.5f , -0.5f , 
--0.5f , -0.5f , -0.5f , 
--0.5f , -0.5f ,  0.5f , 
--0.5f ,  0.5f ,  0.5f , 
-						
- 0.5f ,  0.5f ,  0.5f , 
- 0.5f ,  0.5f , -0.5f , 
- 0.5f , -0.5f , -0.5f , 
- 0.5f , -0.5f , -0.5f , 
- 0.5f , -0.5f ,  0.5f , 
- 0.5f ,  0.5f ,  0.5f , 
-						
--0.5f , -0.5f , -0.5f , 
- 0.5f , -0.5f , -0.5f , 
- 0.5f , -0.5f ,  0.5f , 
- 0.5f , -0.5f ,  0.5f , 
--0.5f , -0.5f ,  0.5f , 
--0.5f , -0.5f , -0.5f , 
-						
--0.5f ,  0.5f , -0.5f , 
- 0.5f ,  0.5f , -0.5f , 
- 0.5f ,  0.5f ,  0.5f , 
- 0.5f ,  0.5f ,  0.5f , 
--0.5f ,  0.5f ,  0.5f , 
--0.5f ,  0.5f , -0.5f ,  
-//NORMALS
-
-0.0f, 0.0f, -1.0f,
-0.0f, 0.0f, -1.0f,
-0.0f, 0.0f, -1.0f,
-0.0f, 0.0f, -1.0f,
-0.0f, 0.0f, -1.0f,
-0.0f, 0.0f, -1.0f,
-
-0.0f, 0.0f, 1.0f,
-0.0f, 0.0f, 1.0f,
-0.0f, 0.0f, 1.0f,
-0.0f, 0.0f, 1.0f,
-0.0f, 0.0f, 1.0f,
-0.0f, 0.0f, 1.0f,
-
--1.0f, 0.0f, 0.0f,
--1.0f, 0.0f, 0.0f,
--1.0f, 0.0f, 0.0f,
--1.0f, 0.0f, 0.0f,
--1.0f, 0.0f, 0.0f,
--1.0f, 0.0f, 0.0f,
-
-1.0f, 0.0f, 0.0f,
-1.0f, 0.0f, 0.0f,
-1.0f, 0.0f, 0.0f,
-1.0f, 0.0f, 0.0f,
-1.0f, 0.0f, 0.0f,
-1.0f, 0.0f, 0.0f,
-
-0.0f, -1.0f, 0.0f,
-0.0f, -1.0f, 0.0f,
-0.0f, -1.0f, 0.0f,
-0.0f, -1.0f, 0.0f,
-0.0f, -1.0f, 0.0f,
-0.0f, -1.0f, 0.0f,
-
-0.0f, 1.0f, 0.0f,
-0.0f, 1.0f, 0.0f,
-0.0f, 1.0f, 0.0f,
-0.0f, 1.0f, 0.0f,
-0.0f, 1.0f, 0.0f,
-0.0f, 1.0f, 0.0f,
-
-
-//UV Mapping
-0.0f, 0.0f,
-1.0f, 0.0f,
-1.0f, 1.0f,
-1.0f, 1.0f,
-0.0f, 1.0f,
-0.0f, 0.0f,
-
-0.0f, 0.0f,
-1.0f, 0.0f,
-1.0f, 1.0f,
-1.0f, 1.0f,
-0.0f, 1.0f,
-0.0f, 0.0f,
-
-1.0f, 0.0f,
-1.0f, 1.0f,
-0.0f, 1.0f,
-0.0f, 1.0f,
-0.0f, 0.0f,
-1.0f, 0.0f,
-
-1.0f, 0.0f,
-1.0f, 1.0f,
-0.0f, 1.0f,
-0.0f, 1.0f,
-0.0f, 0.0f,
-1.0f, 0.0f,
-
-0.0f, 1.0f,
-1.0f, 1.0f,
-1.0f, 0.0f,
-1.0f, 0.0f,
-0.0f, 0.0f,
-0.0f, 1.0f,
-
-0.0f, 1.0f,
-1.0f, 1.0f,
-1.0f, 0.0f,
-1.0f, 0.0f,
-0.0f, 0.0f,
-0.0f, 1.0f,
-};
-
 int main()
 {
 	GLFWwindow* &window = Renderer::Get().window;
@@ -150,16 +18,9 @@ int main()
 	Camera c;
 	c.Bind();
 
-	//Model::Cylinder cylinder(1.0f, 3.0f);
-	//CUBE_DATA(1.0f, 1.0f, 1.0f)
-	VertexBuffer vb(cube, sizeof(cube), false);
-	vb.InsertStride<float,36 * 3>(3);
-	vb.InsertStride<float,36 * 3>(3);
-	vb.InsertStride<float,36 * 2>(2);
-	vb.BindData();
+	Model::Cylinder cylinder(1.0f, 3.0f);
 
 	shader.Bind();
-	shader.SetUniformMat4("model", glm::mat4(1.0f));
 	
 
 	while (!glfwWindowShouldClose(window))
@@ -171,7 +32,6 @@ int main()
 		glEnable(GL_DEPTH_TEST);
 
 		//Drawing Begins here
-		glDrawArrays(GL_TRIANGLES, 0, 15);
 		Renderer::Get().curCamera->Shoot();
 		Renderer::Get().RenderModels();
 		Renderer::Get().curShader->SetUniform3f("lightPos", Renderer::Get().curCameraPos);
