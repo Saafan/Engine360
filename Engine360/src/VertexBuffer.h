@@ -20,6 +20,7 @@ public:
 	VertexBuffer(const void* data, size_t size, const void* indicies, size_t indicesSize, bool interleaved = true);
 	template<typename type> void InsertStride(int count);
 	template<typename type, unsigned int verticesCount> void InsertStride(int count);
+	template<typename type, unsigned int& verticesCount> void InsertStride(int count);
 	void Bind();
 	void BindData();
 
@@ -65,10 +66,18 @@ void VertexBuffer::InsertStride(int count)
 	Type strideDetails = ConvertTypeToGLType<type>();
 	strideDetails.count = count;
 	strides.emplace_back(strideDetails);
-
 };
 
 template<typename type, unsigned int verticesCount>
+void VertexBuffer::InsertStride(int count)
+{
+	Type strideDetails = ConvertTypeToGLType<type>();
+	strideDetails.count = count;
+	strideDetails.elementsCount = verticesCount * count;
+	strides.emplace_back(strideDetails);
+}
+
+template<typename type, unsigned int& verticesCount>
 void VertexBuffer::InsertStride(int count)
 {
 	Type strideDetails = ConvertTypeToGLType<type>();

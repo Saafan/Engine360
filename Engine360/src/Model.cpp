@@ -60,60 +60,95 @@ Model::Cube::Cube(float length, float width, float height, bool visible /*= true
 	SetDrawAttributes(false, CUBE_VERTICES_COUNT, GL_TRIANGLES);
 	this->visible = visible;
 }
-
 Model::Cylinder::Cylinder(float radius, float height, int sides, bool visible)
 {
 	std::vector<glm::vec3> vertices;
 	vertices.reserve((360 / sides) * 2);
 	vertices.emplace_back(0.0f, height / 2.0f, 0.0f);
-	vertices.emplace_back(0.0f, 1.0f, 0.0f);
 	vertices.emplace_back(0.0f, -(height / 2.0f), 0.0f);
-	vertices.emplace_back(0.0f, -(1.0f), 0.0f);
 
 	std::vector<unsigned int> indices;
 	indices.reserve((360 / sides) * 4);
-
+	std::vector<glm::vec3> topCap;
+	std::vector<glm::vec3> bottomCap;
 	size_t counter = 2;
 	for (float i = 0; i <= 360; i += 360.0f / sides)
 	{
 		glm::vec3 vertTop(glm::cos(glm::radians(i)), height / 2.0f, glm::sin(glm::radians(i)));
-		glm::vec3 normalTop(glm::normalize(vertTop - vertices.at(0)));
-
 		glm::vec3 vertBottom(glm::cos(glm::radians(i)), -height / 2.0f, glm::sin(glm::radians(i)));
-		glm::vec3 normalBottom(glm::normalize(vertBottom - vertices.at(1)));
-
-		glm::vec3 vertCapTop(glm::cos(glm::radians(i)), height / 2.0f, glm::sin(glm::radians(i)));
-		glm::vec3 normalCapTop2(glm::normalize(glm::vec3(0.0f, 1.0f, 0.0f)));
-
-		glm::vec3 vertCapBottom(glm::cos(glm::radians(i)), -height / 2.0f, glm::sin(glm::radians(i)));
-		glm::vec3 normalCapTop(glm::normalize(glm::vec3(0.0f, -1.0f, 0.0f)));
-
-		//glBufferSubData(GL_TRIANGLES, );
 		vertices.emplace_back(vertTop * radius);
-		vertices.emplace_back(normalTop);
 		vertices.emplace_back(vertBottom * radius);
-		vertices.emplace_back(normalBottom);
+
+		topCap.emplace_back(vertTop * radius);
+		bottomCap.emplace_back(vertBottom * radius);
 		if (i != 0)
 		{
 			//Cylinder Sides
 			indices.emplace_back(counter);
 			indices.emplace_back(counter + 1);
-			indices.emplace_back(counter + 2);
-
-			indices.emplace_back(counter + 1);
-			indices.emplace_back(counter + 2);
 			indices.emplace_back(counter + 3);
+			indices.emplace_back(counter + 2);
 
-			counter += 4;
+			counter += 2;
 		}
 	}
+
+	indices.emplace_back(counter++);
+	indices.emplace_back(counter++);
+	indices.emplace_back(2);
+	indices.emplace_back(3);
+
+	const size_t sideVerticesCount = vertices.size();
 	
-	vb = new VertexBuffer(&vertices.at(0), sizeof(float) * vertices.size() * 6, &indices.at(0), sizeof(unsigned int) * indices.size());
-	vb->InsertStride<float>(3);
-	vb->InsertStride<float>(3);
+	vertices.insert(vertices.end(), topCap.begin(), topCap.end());
+	vertices.insert(vertices.end(), bottomCap.begin(), bottomCap.end());
+
+	vertices.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
+	vertices.push_back(glm::vec3(0.0f, -1.0f, 0.0f));
+
+	for (size_t i = 2; i < sideVerticesCount; i += 2)
+	{
+		vertices.push_back(glm::normalize(vertices.at(i) - vertices.at(0)));
+		vertices.push_back(glm::normalize(vertices.at(i + 1) - vertices.at(1)));
+	}
+
+	std::vector<glm::vec3> topNormals;
+	std::vector<glm::vec3> bottomNormals;
+	for (size_t i = 0; i < topCap.size(); i++)
+	{
+		topNormals.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
+		bottomNormals.push_back(glm::vec3(0.0f, -1.0f, 0.0f));
+	}
+
+	for (size_t i = 0; i < topCap.size() / 2; i++)
+	{
+		indices.push_back(counter++);
+		indices.push_back(counter++);
+		indices.push_back(counter);
+		indices.push_back(0);
+	}
+	counter++;
+	for (size_t i = 0; i < bottomCap.size() / 2; i++)
+	{
+		indices.push_back(counter++);
+		indices.push_back(counter++);
+		indices.push_back(counter);
+		indices.push_back(1);
+	}
+
+
+	vertices.insert(vertices.end(), topNormals.begin(), topNormals.end());
+	vertices.insert(vertices.end(), bottomNormals.begin(), bottomNormals.end());
+
+	static unsigned int verticesSize = vertices.size() / 2;
+	vb = new VertexBuffer(&vertices.at(0), sizeof(float) * vertices.size() * 6, &indices.at(0), sizeof(unsigned int) * indices.size(), false);
+	vb->InsertStride<float, verticesSize>(3);
+	vb->InsertStride<float, verticesSize>(3);
+
 	vb->BindData();
 
-	SetDrawAttributes(true, indices.size(), GL_TRIANGLES);
+
+	SetDrawAttributes(true, indices.size(), GL_QUADS);
 
 	this->visible = visible;
 }

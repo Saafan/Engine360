@@ -48,5 +48,5 @@ void main()
 
 	vec3 result = vec3(0.3, 0.2f , 0.7f) * (specular + ambientColor + diffuse);
 
-	color = vec4(i_normal, 1.0);
+	color = vec4(result, 1.0);
 }
