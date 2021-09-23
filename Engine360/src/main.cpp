@@ -18,8 +18,8 @@ int main()
 	Camera c;
 	c.Bind();
 
-	Model::Cylinder cylinder(1.0f, 3.0f);
-
+	Model::Cone cone(1.0f, 3.0f);
+	//Model::Cylinder cylinder(1.0f, 3.0f);
 	shader.Bind();
 	
 

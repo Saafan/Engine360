@@ -35,11 +35,11 @@ namespace Model
 	};
 
 	struct Cylinder : public Model {
-		Cylinder(float radius, float height, int sides = 18, bool visible = true);
+		Cylinder(float radius, float height, unsigned int sides = 18, bool visible = true);
 	};
 
 	struct Cone : public Model {
-		Cone(int radius, int height, bool visible = true);
+		Cone(float radius, float height, unsigned int sides = 18, bool visible = true);
 	};
 
 	struct Torus : public Model {
