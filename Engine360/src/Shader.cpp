@@ -61,7 +61,7 @@ unsigned int Shader::CompileShader(std::string& srcCode, unsigned int shaderType
 	if (result == GL_FALSE)
 	{
 		size_t size = 0;
-		GLchar message[1024];
+		GLchar message[2048];
 		glGetShaderInfoLog(shader, 2048, nullptr, message);
 		std::cout << "Message: " << message << std::endl;
 	}
@@ -73,11 +73,17 @@ void Shader::CreateProgram()
 	programID = glCreateProgram();
 
 	vertShaderID = CompileShader(shaderData.vertexShader, GL_VERTEX_SHADER);
-	fragShaderID = CompileShader(shaderData.fragmentShader, GL_FRAGMENT_SHADER);
-	geomShaderID = CompileShader(shaderData.geometryShader, GL_GEOMETRY_SHADER);
-
 	glAttachShader(programID, vertShaderID);
+
+	fragShaderID = CompileShader(shaderData.fragmentShader, GL_FRAGMENT_SHADER);
 	glAttachShader(programID, fragShaderID);
+
+	if (!shaderData.geometryShader.empty())
+	{
+		geomShaderID = CompileShader(shaderData.geometryShader, GL_GEOMETRY_SHADER);
+		glAttachShader(programID, geomShaderID);
+	}
+
 
 	glLinkProgram(programID);
 	glValidateProgram(programID);
@@ -116,7 +122,7 @@ void Shader::SetUniformMat4(const char* name, glm::mat4&& value)
 unsigned int Shader::GetUniformLocation(const char* name)
 {
 	static std::unordered_map<const char*, unsigned int> list;
-	
+
 	if (list.find(name) == list.end())
 	{
 		const unsigned int location = glGetUniformLocation(programID, name);

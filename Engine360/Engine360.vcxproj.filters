@@ -53,5 +53,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\main.glsl" />
+    <None Include="Shaders\normals.glsl" />
   </ItemGroup>
 </Project>

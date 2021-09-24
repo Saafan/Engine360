@@ -28,6 +28,7 @@ public:
 	Renderer(const Renderer&) = delete;
 
 	void RenderModels();
+	void RenderModels(Shader& shader);
 	void UpdateCameraPosition();
 
 	static Renderer& Get() {
@@ -60,4 +61,19 @@ inline void Renderer::RenderModels()
 	for (const auto& model : models)
 		if (model->visible)
 			model->Render();
+}
+
+inline void Renderer::RenderModels(Shader& shader)
+{
+	Shader* tmp = curShader;
+	curShader = &shader;
+	shader.Bind();
+	curCamera->UpdateViewProjectionMatrix();
+
+	for (const auto& model : models)
+		if (model->visible)
+			model->Render();
+	
+	curShader = tmp;
+	tmp->Bind();
 }

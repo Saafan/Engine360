@@ -1,0 +1,97 @@
+﻿'Engine360.exe' (Win32): Loaded 'C:\Users\Saafan\Documents\OpenGL\Projects\Engine360\Debug\Engine360.exe'. Symbols loaded.
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\ntdll.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\kernel32.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\KernelBase.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\user32.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\win32u.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\gdi32.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\gdi32full.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\msvcp_win.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\ucrtbase.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\shell32.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\opengl32.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\msvcrt.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\advapi32.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\sechost.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\rpcrt4.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\combase.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Users\Saafan\Documents\OpenGL\Projects\Engine360\Debug\glew32.dll'. Module was built without symbols.
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\msvcp140d.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\vcruntime140d.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\ucrtbased.dll'. 
+'Engine360.exe' (Win32): Unloaded 'C:\Windows\SysWOW64\ucrtbased.dll'
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\glu32.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\DXCore.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\ucrtbased.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\imm32.dll'. 
+The thread 0x1228 has exited with code 0 (0x0).
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\uxtheme.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\winmm.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\dinput8.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\XInput1_4.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\devobj.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\cfgmgr32.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\dwmapi.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\SHCore.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\InputHost.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\CoreMessaging.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\bcryptprimitives.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\cryptbase.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\msctf.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\hid.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\setupapi.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\wintrust.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\crypt32.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\msasn1.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\ntmarta.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\directxdatabasehelper.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\kernel.appcore.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\System32\DriverStore\FileRepository\nvdmi.inf_amd64_25ce2511f15869cc\nvdlist.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\version.dll'. 
+'Engine360.exe' (Win32): Unloaded 'C:\Windows\SysWOW64\version.dll'
+'Engine360.exe' (Win32): Unloaded 'C:\Windows\System32\DriverStore\FileRepository\nvdmi.inf_amd64_25ce2511f15869cc\nvdlist.dll'
+'Engine360.exe' (Win32): Loaded 'C:\Windows\System32\DriverStore\FileRepository\nvdmi.inf_amd64_25ce2511f15869cc\nvdlist.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\version.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\clbcatq.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\AppXDeploymentClient.dll'. 
+'Engine360.exe' (Win32): Unloaded 'C:\Windows\SysWOW64\AppXDeploymentClient.dll'
+'Engine360.exe' (Win32): Loaded 'C:\Windows\System32\DriverStore\FileRepository\29_dell_con_mobile_icl_iigd_dch.inf_amd64_975e6865bfde88c6\ig11icd32.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\ole32.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\dxgi.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\System32\DriverStore\FileRepository\29_dell_con_mobile_icl_iigd_dch.inf_amd64_975e6865bfde88c6\igdml32.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\ResourcePolicyClient.dll'. 
+'Engine360.exe' (Win32): Unloaded 'C:\Windows\SysWOW64\ResourcePolicyClient.dll'
+'Engine360.exe' (Win32): Unloaded 'C:\Windows\SysWOW64\version.dll'
+'Engine360.exe' (Win32): Unloaded 'C:\Windows\System32\DriverStore\FileRepository\nvdmi.inf_amd64_25ce2511f15869cc\nvdlist.dll'
+The thread 0x14ee4 has exited with code 0 (0x0).
+'Engine360.exe' (Win32): Loaded 'C:\Windows\System32\DriverStore\FileRepository\nvdmi.inf_amd64_25ce2511f15869cc\nvdlist.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\version.dll'. 
+'Engine360.exe' (Win32): Unloaded 'C:\Windows\SysWOW64\version.dll'
+'Engine360.exe' (Win32): Unloaded 'C:\Windows\System32\DriverStore\FileRepository\nvdmi.inf_amd64_25ce2511f15869cc\nvdlist.dll'
+'Engine360.exe' (Win32): Loaded 'C:\Windows\System32\DriverStore\FileRepository\nvdmi.inf_amd64_25ce2511f15869cc\nvdlist.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\version.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\System32\DriverStore\FileRepository\29_dell_con_mobile_icl_iigd_dch.inf_amd64_975e6865bfde88c6\igdgmm32.dll'. 
+'Engine360.exe' (Win32): Unloaded 'C:\Windows\SysWOW64\version.dll'
+'Engine360.exe' (Win32): Unloaded 'C:\Windows\System32\DriverStore\FileRepository\nvdmi.inf_amd64_25ce2511f15869cc\nvdlist.dll'
+The thread 0x1c688 has exited with code 0 (0x0).
+'Engine360.exe' (Win32): Loaded 'C:\Windows\System32\DriverStore\FileRepository\29_dell_con_mobile_icl_iigd_dch.inf_amd64_975e6865bfde88c6\igc32.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\powrprof.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\umpdc.dll'. 
+The thread 0x1d724 has exited with code 1 (0x1).
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\version.dll'. 
+'Engine360.exe' (Win32): Unloaded 'C:\Windows\SysWOW64\version.dll'
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\TextInputFramework.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\oleaut32.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\CoreUIComponents.dll'. 
+'Engine360.exe' (Win32): Loaded 'C:\Windows\SysWOW64\WinTypes.dll'. 
+The thread 0x33b8 has exited with code -1073741510 (0xc000013a).
+The thread 0x1658 has exited with code -1073741510 (0xc000013a).
+The thread 0xdfb4 has exited with code -1073741510 (0xc000013a).
+The thread 0xa3d0 has exited with code -1073741510 (0xc000013a).
+The thread 0x522c has exited with code -1073741510 (0xc000013a).
+The thread 0x9b7c has exited with code -1073741510 (0xc000013a).
+The thread 0x1706c has exited with code -1073741510 (0xc000013a).
+The thread 0x12708 has exited with code -1073741510 (0xc000013a).
+The thread 0x1a0d8 has exited with code -1073741510 (0xc000013a).
+The thread 0x6224 has exited with code -1073741510 (0xc000013a).
+The program '[41832] Engine360.exe' has exited with code -1073741510 (0xc000013a).

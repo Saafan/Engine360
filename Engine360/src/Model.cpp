@@ -143,7 +143,7 @@ Model::Cylinder::Cylinder(float radius, float height, unsigned int sides, bool v
 	vertices.insert(vertices.end(), bottomNormals.begin(), bottomNormals.end());
 
 	static unsigned int verticesSize = vertices.size() / 2;
-	vb = new VertexBuffer(&vertices.at(0), sizeof(float) * vertices.size() * 6, &indices.at(0), sizeof(unsigned int) * indices.size(), false);
+	vb = new VertexBuffer(&vertices.at(0), sizeof(float) * vertices.size() * 3, &indices.at(0), sizeof(unsigned int) * indices.size(), false);
 	vb->InsertStride<float, verticesSize>(3);
 	vb->InsertStride<float, verticesSize>(3);
 	vb->BindData();
@@ -165,7 +165,7 @@ Model::Plane::Plane(int length, int width, bool visible)
 	this->visible = visible;
 }
 
-void PrintQeuedDataStructure(std::vector<glm::vec3>& data, int numOfAttrib)
+void PrintQeued(std::vector<glm::vec3>& data, unsigned int numOfAttrib)
 {
 	const size_t length = data.size() / numOfAttrib;
 	for (size_t i = 0; i < length; i++)
@@ -177,83 +177,54 @@ void PrintQeuedDataStructure(std::vector<glm::vec3>& data, int numOfAttrib)
 	}
 }
 
+void PrintInterleaved(std::vector<glm::vec3>& data, unsigned int numOfAttrib)
+{
+	for (size_t i = 0; i < data.size(); i += numOfAttrib)
+	{
+		std::cout << i << ") ";
+		for (size_t j = 0; j < numOfAttrib; j++)
+			std::cout << " (x: " << data.at(i + j).x << ", y:" << data.at(i + j).y << ", z:" << data.at(i + j).z << ")" << "	|||	  ";
+		std::cout << std::endl;
+	}
+}
+
 Model::Cone::Cone(float radius, float height, unsigned int sides, bool visible)
 {
 	std::vector<glm::vec3> vertices;
-	vertices.reserve((360 / sides) * 2);
-	vertices.emplace_back(0.0f, height / 2.0f, 0.0f);
-	vertices.emplace_back(0.0f, -(height / 2.0f), 0.0f);
-
 	std::vector<unsigned int> indices;
-	indices.reserve((360 / sides) * 4);
-	std::vector<glm::vec3> topCap;
-	std::vector<glm::vec3> bottomCap;
-	size_t counter = 2;
-	for (float i = 0; i <= 360; i += 360.0f / sides)
+
+	const float inc = 360.0f / sides;
+	for (float i = 0; i <= 360; i += inc)
 	{
-		glm::vec3 vertTop(0.0f, 0.0f, 0.0f);
-		glm::vec3 vertBottom(glm::cos(glm::radians(i)), -height / 2.0f, glm::sin(glm::radians(i)));
-		vertices.emplace_back(vertTop * radius);
-		vertices.emplace_back(vertBottom * radius);
+		const glm::vec3 vec1(glm::cos(glm::radians(i)), 0.0f, glm::sin(glm::radians(i)));
+		const glm::vec3 vec2(0.0f, height, 0.0f);
+		const glm::vec3 futureVec(glm::cos(glm::radians(i + inc)), 0.0f, glm::sin(glm::radians(i + inc)));
 
-		topCap.emplace_back(vertTop * radius);
-		bottomCap.emplace_back(vertBottom * radius);
-		if (i != 0)
-		{
-			//Cylinder Sides
-			indices.emplace_back(counter);
-			indices.emplace_back(counter + 1);
-			indices.emplace_back(counter + 3);
-			indices.emplace_back(counter + 2);
+		glm::vec3 normal = glm::normalize(glm::cross(vec2 - vec1, futureVec - vec1));
 
-			counter += 2;
-		}
+		vertices.push_back(vec1);
+		vertices.push_back(normal);
+		vertices.push_back(vec2);
+		vertices.push_back(normal);
 	}
 
-	indices.emplace_back(counter++);
-	indices.emplace_back(counter++);
-	indices.emplace_back(2);
-	indices.emplace_back(3);
-
-	const size_t sideVerticesCount = vertices.size();
-
-	vertices.insert(vertices.end(), bottomCap.begin(), bottomCap.end());
-	vertices.insert(vertices.end(), topCap.begin(), topCap.end());
-
-	vertices.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
-	vertices.push_back(glm::vec3(0.0f, -1.0f, 0.0f));
-
-	for (size_t i = 2; i < sideVerticesCount; i += 2)
+	size_t counter = 0;
+	for (size_t i = 0; i < vertices.size()/2; i++)
 	{
-		vertices.push_back(glm::normalize(vertices.at(i) - vertices.at(0)));
-		vertices.push_back(glm::normalize(vertices.at(i + 1) - vertices.at(1)));
+		indices.emplace_back(counter++);
+		indices.emplace_back(counter++);
+		indices.emplace_back(counter);
 	}
 
-	std::vector<glm::vec3> topNormals;
-	std::vector<glm::vec3> bottomNormals;
-	for (size_t i = 0; i < topCap.size(); i++)
-	{
-		bottomNormals.push_back(glm::vec3(0.0f, -1.0f, 0.0f));
-		topNormals.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
-	}
+	PrintInterleaved(vertices, 2);
 
-	for (size_t i = 0; i < bottomCap.size() / 2; i++)
-	{
-		indices.push_back(counter++);
-		indices.push_back(counter++);
-		indices.push_back(counter);
-		indices.push_back(1);
-	}
+	vb = new VertexBuffer(&vertices.at(0), vertices.size() * 3 * sizeof(float), &indices.at(0), indices.size() * sizeof(unsigned int));
 
-	vertices.insert(vertices.end(), bottomNormals.begin(), bottomNormals.end());
-	vertices.insert(vertices.end(), topNormals.begin(), topNormals.end());
+	vb->InsertStride<float>(3);
+	vb->InsertStride<float>(3);
 
-	static unsigned int verticesSize = vertices.size() / 2;
-	vb = new VertexBuffer(&vertices.at(0), sizeof(float) * vertices.size() * 6, &indices.at(0), sizeof(unsigned int) * indices.size(), false);
-	vb->InsertStride<float, verticesSize>(3);
-	vb->InsertStride<float, verticesSize>(3);
 	vb->BindData();
-	PrintQeuedDataStructure(vertices, 2);
-	SetDrawAttributes(true, indices.size(), GL_QUADS);
+
+	SetDrawAttributes(true, indices.size(), GL_TRIANGLES);
 	this->visible = visible;
 }

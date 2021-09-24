@@ -25,7 +25,7 @@ glm::vec2 GetDeltaMouse()
 
 void Camera::Bind()
 {
-	glm::mat4 proj = glm::perspective(glm::radians(60.0f), (float)WIDTH / (float)HEIGHT, 0.0001f, 1000.0f);
+	proj = glm::perspective(glm::radians(60.0f), (float)WIDTH / (float)HEIGHT, 0.0001f, 1000.0f);
 	Renderer::Get().curShader->SetUniformMat4(SHADER_PROJ, proj);
 	Renderer::Get().curCamera = this;
 }
@@ -74,4 +74,20 @@ void Camera::Shoot()
 	Renderer::Get().UpdateCameraPosition();
 
 	Renderer::Get().curShader->SetUniformMat4(SHADER_VIEW, view);
+}
+
+void Camera::UpdateViewProjectionMatrix()
+{
+	Renderer::Get().curShader->SetUniformMat4(SHADER_PROJ, proj);
+	Renderer::Get().curShader->SetUniformMat4(SHADER_VIEW, view);
+}
+
+glm::mat4& Camera::GetProjectionMatrix()
+{
+	return proj;
+}
+
+glm::mat4& Camera::GetViewMatrix()
+{
+	return view;
 }
