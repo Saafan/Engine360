@@ -16,10 +16,9 @@ void Model::Model::Render()
 		glDrawArrays(drawTarget, 0, count);
 }
 
-
-void Model::Model::SetPosition(glm::mat4 value)
+void Model::Model::SetPosition(glm::vec3 value)
 {
-	model = value;
+	model = glm::translate(glm::mat4(1.0f), value);
 }
 
 void Model::Model::SetPosition(float v1, float v2, float v3)
@@ -209,13 +208,12 @@ Model::Cone::Cone(float radius, float height, unsigned int sides, bool visible)
 	}
 
 	size_t counter = 0;
-	for (size_t i = 0; i < vertices.size()/2; i++)
+	for (size_t i = 0; i < vertices.size() / 4-1; i++)
 	{
 		indices.emplace_back(counter++);
 		indices.emplace_back(counter++);
 		indices.emplace_back(counter);
 	}
-
 	PrintInterleaved(vertices, 2);
 
 	vb = new VertexBuffer(&vertices.at(0), vertices.size() * 3 * sizeof(float), &indices.at(0), indices.size() * sizeof(unsigned int));

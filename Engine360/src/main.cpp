@@ -1,4 +1,5 @@
 #include "Renderer/Renderer.h"
+#include "ext/matrix_transform.hpp"
 
 int main()
 {
@@ -14,14 +15,15 @@ int main()
 
 	glfwSetInputMode(Renderer::Get().window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-	Shader shaderNomrals("Shaders/normals.glsl");
-	Shader shader("Shaders/main.glsl");
+	Shader shaderNomrals("Shaders/main 2.glsl");
+	Shader shader("Shaders/normals.glsl");
+
+	//\Model::Cube cube(1.0f, 1.0f, 3.0f);
+	Model::Cone cone(1.0f, 3.0f);
 
 	Camera c;
 	c.Bind();
-	Model::Cone cone(1.0f, 3.0f);
-	//Model::Cylinder cylinder(1.0f, 3.0f);
-	shaderNomrals.Bind();
+	
 	
 	while (!glfwWindowShouldClose(window))
 	{
@@ -31,10 +33,15 @@ int main()
 		glEnable(GL_DEPTH_TEST);
 
 		//Drawing Begins here
-		shaderNomrals.Bind();
 		Renderer::Get().curCamera->Shoot();
-		c.Bind();
+		shader.Bind();
+		Renderer::Get().curCamera->UpdateViewProjectionMatrix();
 		Renderer::Get().RenderModels();
+
+		shaderNomrals.Bind();
+		Renderer::Get().curCamera->UpdateViewProjectionMatrix();
+		Renderer::Get().RenderModels();
+
 
 		glfwSwapBuffers(window);
 	}

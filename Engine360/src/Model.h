@@ -12,7 +12,7 @@ namespace Model
 		void Render();
 		bool visible = true;
 
-		void SetPosition(glm::mat4 value);
+		void SetPosition(glm::vec3 value);
 		void SetPosition(float v1, float v2, float v3);
 
 	protected:

@@ -25,7 +25,7 @@ in VS_OUT{
 	vec3 normal;
 } gs_in[];
 
-const float MAGNITUDE = 0.4;
+const float MAGNITUDE = 3.0;
 
 uniform mat4 proj;
 

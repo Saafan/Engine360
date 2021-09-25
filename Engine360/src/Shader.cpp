@@ -60,9 +60,9 @@ unsigned int Shader::CompileShader(std::string& srcCode, unsigned int shaderType
 
 	if (result == GL_FALSE)
 	{
-		size_t size = 0;
-		GLchar message[2048];
-		glGetShaderInfoLog(shader, 2048, nullptr, message);
+		const size_t size = 2048;
+		char* message = (char*)malloc(size * sizeof(char));
+		glGetShaderInfoLog(shader, size * sizeof(char), nullptr, message);
 		std::cout << "Message: " << message << std::endl;
 	}
 	return shader;
@@ -84,11 +84,9 @@ void Shader::CreateProgram()
 		glAttachShader(programID, geomShaderID);
 	}
 
-
 	glLinkProgram(programID);
 	glValidateProgram(programID);
 
-	glUseProgram(programID);
 	glDeleteShader(vertShaderID);
 	glDeleteShader(fragShaderID);
 	glDeleteShader(geomShaderID);

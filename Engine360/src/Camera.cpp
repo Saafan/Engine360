@@ -67,6 +67,7 @@ void Camera::Shoot()
 	dir.z = glm::sin(glm::radians(yaw)) * glm::cos(glm::radians(pitch));
 	dir = glm::normalize(dir);
 
+
 	glfwSetKeyCallback(Renderer::Get().window, key_callback);
 
 	view = glm::lookAt(cameraPos, cameraPos + dir, glm::dvec3(0.0f, 1.0f, 0.0f));
