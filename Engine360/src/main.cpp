@@ -1,5 +1,6 @@
 #include "Renderer/Renderer.h"
-#include "ext/matrix_transform.hpp"
+
+Shader* curShader = Renderer::Get().curShader;
 
 int main()
 {
@@ -15,10 +16,10 @@ int main()
 
 	glfwSetInputMode(Renderer::Get().window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-	Shader shaderNomrals("Shaders/main 2.glsl");
-	Shader shader("Shaders/normals.glsl");
+	Shader shaderNormal("Shaders/normals.glsl");
+	Shader shader("Shaders/main.glsl");
 
-	//\Model::Cube cube(1.0f, 1.0f, 3.0f);
+	//Model::Cube cube(1.0f, 1.0f, 3.0f);
 	Model::Cone cone(1.0f, 3.0f);
 
 	Camera c;
@@ -38,7 +39,7 @@ int main()
 		Renderer::Get().curCamera->UpdateViewProjectionMatrix();
 		Renderer::Get().RenderModels();
 
-		shaderNomrals.Bind();
+		shaderNormal.Bind();
 		Renderer::Get().curCamera->UpdateViewProjectionMatrix();
 		Renderer::Get().RenderModels();
 

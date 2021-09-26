@@ -12,7 +12,7 @@
 
 const int WIDTH = 1920;
 const int HEIGHT = 1080;
-const double CAMERA_SPEED = 0.05;
+const double CAMERA_SPEED = 0.05f;
 const double CAMERA_MOTION_SPEED = 0.5f;
 
 #define SHADER_MODEL "model"
@@ -31,6 +31,8 @@ public:
 	void RenderModels(Shader& shader);
 	void UpdateCameraPosition();
 
+	//Setters and Getters
+	void SetShader(Shader* shader);
 	static Renderer& Get() {
 		static Renderer renderer;
 		return renderer;
@@ -54,6 +56,11 @@ public:
 inline void Renderer::UpdateCameraPosition()
 {
 	curShader->SetUniform3f(CAMERA_POS, curCameraPos);
+}
+
+inline void Renderer::SetShader(Shader* shader)
+{
+	curShader = shader;
 }
 
 inline void Renderer::RenderModels()

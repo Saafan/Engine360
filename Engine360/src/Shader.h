@@ -22,10 +22,13 @@ public:
 	void SetUniformMat4(const char* name, glm::mat4& value);
 	void SetUniformMat4(const char* name, glm::mat4&& value);
 
+	const char* GetName();
+
 private:
 	void GetShaderCode(std::ifstream& file);
 	unsigned int CompileShader(std::string& srcCode, unsigned int shaderType);
 	ShadersData shaderData;
+	std::string shaderName;
 
 	void CreateProgram();
 

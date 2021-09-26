@@ -9,7 +9,6 @@ void Model::Model::Render()
 	vb->Bind();
 
 	Renderer::Get().curShader->SetUniformMat4(SHADER_MODEL, model);
-
 	if (indexed)
 		glDrawElements(drawTarget, count, GL_UNSIGNED_INT, nullptr);
 	else

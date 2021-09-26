@@ -15,7 +15,7 @@ void main()
 {
 	mat4 mvp = proj * view * model;
 	gl_Position = mvp * vec4(pos, 1.0);
-	i_pos = model * vec4(pos, 1.0);
+	i_pos = model * vec4(pos, 1.0) + vec4(3.0f,3.0f,3.0f,0.0f);
 	i_normal = mat3(transpose(inverse(model))) * normal;
 }
 

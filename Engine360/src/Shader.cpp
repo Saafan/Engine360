@@ -8,6 +8,7 @@
 
 Shader::Shader(const char* shaderPath)
 {
+	shaderName = shaderPath;
 	std::ifstream file(shaderPath);
 
 	if (!file)
@@ -24,7 +25,7 @@ Shader::Shader(const char* shaderPath)
 void Shader::Bind()
 {
 	glUseProgram(programID);
-	Renderer::Get().curShader = this;
+	Renderer::Get().SetShader(this);
 }
 
 void Shader::GetShaderCode(std::ifstream& file)
@@ -60,7 +61,8 @@ unsigned int Shader::CompileShader(std::string& srcCode, unsigned int shaderType
 
 	if (result == GL_FALSE)
 	{
-		const size_t size = 2048;
+		int size;
+		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &size);
 		char* message = (char*)malloc(size * sizeof(char));
 		glGetShaderInfoLog(shader, size * sizeof(char), nullptr, message);
 		std::cout << "Message: " << message << std::endl;
@@ -85,7 +87,21 @@ void Shader::CreateProgram()
 	}
 
 	glLinkProgram(programID);
+
+	int result;
+	glGetProgramiv(programID, GL_LINK_STATUS, &result);
+
+	if (result == GL_FALSE)
+	{
+		int size;
+		glGetProgramiv(programID, GL_INFO_LOG_LENGTH, &size);
+		char* message = (char*)malloc(size * sizeof(char));
+		glGetProgramInfoLog(programID, size * sizeof(char), nullptr, message);
+		std::cout << "Message: " << message << std::endl;
+	}
+
 	glValidateProgram(programID);
+
 
 	glDeleteShader(vertShaderID);
 	glDeleteShader(fragShaderID);
@@ -94,39 +110,53 @@ void Shader::CreateProgram()
 
 void Shader::SetUniform1f(const char* name, float value)
 {
-	glUniform1f(GetUniformLocation(name), value);
+	const int location = GetUniformLocation(name);
+	if (location != -1) glUniform1f(GetUniformLocation(name), value);
 }
 
 void Shader::SetUniform3f(const char* name, float v0, float v1, float v2)
 {
-	glUniform3f(GetUniformLocation(name), v0, v1, v2);
+	const int location = GetUniformLocation(name);
+	if (location != -1)  glUniform3f(location, v0, v1, v2);
+
 }
 
 void Shader::SetUniform3f(const char* name, glm::vec3 value)
 {
-	glUniform3f(GetUniformLocation(name), value.x, value.y, value.z);
+	const int location = GetUniformLocation(name);
+	if (location != -1) glUniform3f(GetUniformLocation(name), value.x, value.y, value.z);
 }
 
 void Shader::SetUniformMat4(const char* name, glm::mat4& value)
 {
-	glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(value));
+	const int location = GetUniformLocation(name);
+	if (location != -1) glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(value));
 }
 
 void Shader::SetUniformMat4(const char* name, glm::mat4&& value)
 {
-	glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(value));
+	const int location = GetUniformLocation(name);
+	if (location != -1) glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(value));
+}
+
+const char* Shader::GetName()
+{
+	return shaderName.c_str();
 }
 
 unsigned int Shader::GetUniformLocation(const char* name)
 {
 	static std::unordered_map<const char*, unsigned int> list;
+	const char* listName = name + Renderer::Get().curShader->programID;
 
-	if (list.find(name) == list.end())
+	if (list.find(listName) == list.end())
 	{
-		const unsigned int location = glGetUniformLocation(programID, name);
-		list[name] = location;
+		const int location = glGetUniformLocation(programID, name);
+		if (location == -1)
+			std::cout << "Uniform " << name << " doesn't exist in Shader[ " << shaderName << " ]" << std::endl;
+		list[listName] = location;
 		return location;
 	}
 
-	return list[name];
+	return list[listName];
 }

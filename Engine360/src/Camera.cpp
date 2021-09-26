@@ -51,7 +51,7 @@ void Camera::Shoot2D()
 	glm::mat4 view(1.0f);
 
 	Renderer::Get().UpdateCameraPosition();
-	Renderer::Get().curShader->SetUniformMat4(SHADER_PROJ, glm::mat4(1.0f));
+	Renderer::Get().curShader->SetUniformMat4(SHADER_PROJ, ortho);
 	Renderer::Get().curShader->SetUniformMat4(SHADER_VIEW, view);
 }
 
