@@ -1,6 +1,6 @@
 #include "Model.h"
 
-#include "gtc/matrix_transform.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 #include "Data/ModelVertices.h"
 #include "Renderer/Renderer.h"
 
@@ -213,7 +213,6 @@ Model::Cone::Cone(float radius, float height, unsigned int sides, bool visible)
 		indices.emplace_back(counter++);
 		indices.emplace_back(counter);
 	}
-	PrintInterleaved(vertices, 2);
 
 	vb = new VertexBuffer(&vertices.at(0), vertices.size() * 3 * sizeof(float), &indices.at(0), indices.size() * sizeof(unsigned int));
 

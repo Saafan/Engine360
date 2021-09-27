@@ -1,7 +1,7 @@
 #include "Camera.h"
 #include "Renderer/Renderer.h"
 #include "GLFW/glfw3.h"
-#include "gtc/matrix_transform.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 
 glm::dvec3 dir;
 glm::dvec3& cameraPos = Renderer::Get().curCameraPos;

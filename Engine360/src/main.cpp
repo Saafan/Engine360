@@ -1,12 +1,14 @@
 #include "Renderer/Renderer.h"
 
-Shader* curShader = Renderer::Get().curShader;
-
 int main()
 {
 	GLFWwindow* &window = Renderer::Get().window;
 	if (!glfwInit())
 		std::cout << "Initialization of GLFW Failed!" << std::endl;
+
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	Renderer::Get().window = glfwCreateWindow(WIDTH, HEIGHT, "Engine360", nullptr, nullptr);
 	glfwMakeContextCurrent(window);
@@ -16,15 +18,18 @@ int main()
 
 	glfwSetInputMode(Renderer::Get().window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
+	//glEnable(GL_BLEND);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	Shader shaderNormal("Shaders/normals.glsl");
 	Shader shader("Shaders/main.glsl");
+	shader.Bind();
 
-	//Model::Cube cube(1.0f, 1.0f, 3.0f);
-	Model::Cone cone(1.0f, 3.0f);
-
+	Model::Cube cone(1.0f, 1.0f, 1.0f);
 	Camera c;
 	c.Bind();
-	
+	Texture tex("images/container.png");
+	tex.Bind();
 	
 	while (!glfwWindowShouldClose(window))
 	{
@@ -35,14 +40,14 @@ int main()
 
 		//Drawing Begins here
 		Renderer::Get().curCamera->Shoot();
+		
 		shader.Bind();
 		Renderer::Get().curCamera->UpdateViewProjectionMatrix();
 		Renderer::Get().RenderModels();
 
-		shaderNormal.Bind();
-		Renderer::Get().curCamera->UpdateViewProjectionMatrix();
-		Renderer::Get().RenderModels();
-
+		//shaderNormal.Bind();
+		//Renderer::Get().curCamera->UpdateViewProjectionMatrix();
+		//Renderer::Get().RenderModels();
 
 		glfwSwapBuffers(window);
 	}

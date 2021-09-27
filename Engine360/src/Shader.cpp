@@ -2,9 +2,8 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include <unordered_map>
 #include "GL/glew.h"
-#include <gtc/type_ptr.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 Shader::Shader(const char* shaderPath)
 {
@@ -102,7 +101,6 @@ void Shader::CreateProgram()
 
 	glValidateProgram(programID);
 
-
 	glDeleteShader(vertShaderID);
 	glDeleteShader(fragShaderID);
 	glDeleteShader(geomShaderID);
@@ -112,6 +110,12 @@ void Shader::SetUniform1f(const char* name, float value)
 {
 	const int location = GetUniformLocation(name);
 	if (location != -1) glUniform1f(GetUniformLocation(name), value);
+}
+
+void Shader::SetUniform1i(const char* name, int value)
+{
+	const int location = GetUniformLocation(name);
+	if (location != -1) glUniform1i(GetUniformLocation(name), value);
 }
 
 void Shader::SetUniform3f(const char* name, float v0, float v1, float v2)
@@ -146,7 +150,6 @@ const char* Shader::GetName()
 
 unsigned int Shader::GetUniformLocation(const char* name)
 {
-	static std::unordered_map<const char*, unsigned int> list;
 	const char* listName = name + Renderer::Get().curShader->programID;
 
 	if (list.find(listName) == list.end())

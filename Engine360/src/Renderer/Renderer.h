@@ -1,7 +1,8 @@
 #pragma once
 #include "GL\glew.h"
 #include "GLFW\glfw3.h"
-#include "glm.hpp"
+#include "glm\glm.hpp"
+
 #include <string>
 #include <iostream>
 #include <vector>
@@ -9,6 +10,7 @@
 #include "Shader.h"
 #include "Camera.h"
 #include "Model.h"
+#include "Texture.h"
 
 const int WIDTH = 1920;
 const int HEIGHT = 1080;
@@ -18,6 +20,7 @@ const double CAMERA_MOTION_SPEED = 0.5f;
 #define SHADER_MODEL "model"
 #define SHADER_VIEW "view"
 #define SHADER_PROJ "proj"
+#define SHADER_TEXTURE_SLOT "textureSlot"
 
 #define CAMERA_POS "cameraPos"
 
