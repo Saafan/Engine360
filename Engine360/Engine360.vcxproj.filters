@@ -68,10 +68,14 @@
     <ClInclude Include="src\vendors\stb_image\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Helpers\Printer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\main.glsl" />
     <None Include="Shaders\normals.glsl" />
     <None Include="Shaders\main 2.glsl" />
+    <None Include="Shaders\LightBoxes.glsl" />
   </ItemGroup>
 </Project>

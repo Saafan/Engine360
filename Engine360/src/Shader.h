@@ -24,7 +24,16 @@ public:
 	void SetUniformMat4(const char* name, glm::mat4& value);
 	void SetUniformMat4(const char* name, glm::mat4&& value);
 
+	void SetUniformMat4Positioned(const char* name, glm::vec3 pos, glm::mat4 originalPos = glm::mat4(1.0f));
+	void SetUniformMat4Positioned(const char* name, float v0, float v1, float v2, glm::mat4 originalPos = glm::mat4(1.0f));
+
 	const char* GetName();
+
+	float GetFloatUniform(const char* name);
+	int GetIntUniform(const char* name);
+	glm::vec3 GetVec3Uniform(const char* name);
+	glm::vec4 GetVec4Uniform(const char* name);
+	glm::mat4 GetMat4Uniform(const char* name);
 
 private:
 	void GetShaderCode(std::ifstream& file);

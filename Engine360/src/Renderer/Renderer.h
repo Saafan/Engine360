@@ -1,10 +1,8 @@
 #pragma once
 #include "GL\glew.h"
 #include "GLFW\glfw3.h"
-#include "glm\glm.hpp"
 
 #include <string>
-#include <iostream>
 #include <vector>
 
 #include "Shader.h"
@@ -12,10 +10,12 @@
 #include "Model.h"
 #include "Texture.h"
 
+#include "Helpers/Printer.h"
+
 const int WIDTH = 1920;
 const int HEIGHT = 1080;
-const double CAMERA_SPEED = 0.05f;
-const double CAMERA_MOTION_SPEED = 0.5f;
+const float CAMERA_SPEED = 0.05f;
+const float CAMERA_MOTION_SPEED = 0.5f;
 
 #define SHADER_MODEL "model"
 #define SHADER_VIEW "view"
@@ -49,8 +49,9 @@ public:
 
 	//Camera
 	Camera* curCamera = nullptr;
-	glm::dvec3 curCameraPos = glm::vec3(0.0f, 0.5f, 1.5f);
+	glm::vec3 curCameraPos = glm::vec3(0.0f, 0.5f, 1.5f);
 	double x = 0.0, y = 0.0;
+	
 
 	//Models
 	std::vector<Model::Model*> models;
@@ -83,7 +84,7 @@ inline void Renderer::RenderModels(Shader& shader)
 	for (const auto& model : models)
 		if (model->visible)
 			model->Render();
-	
+
 	curShader = tmp;
 	tmp->Bind();
 }

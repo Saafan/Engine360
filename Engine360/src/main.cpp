@@ -31,13 +31,15 @@ int main()
 	Texture tex("images/container.png");
 	tex.Bind();
 	
+	Renderer::Get().curShader->SetUniform3f("lightPos", 3, 2, 3);
+	
+
 	while (!glfwWindowShouldClose(window))
 	{
 		glfwPollEvents();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.2f, 0.5f, 0.8f, 1.0f);
 		glEnable(GL_DEPTH_TEST);
-
 		//Drawing Begins here
 		Renderer::Get().curCamera->Shoot();
 		
@@ -45,9 +47,9 @@ int main()
 		Renderer::Get().curCamera->UpdateViewProjectionMatrix();
 		Renderer::Get().RenderModels();
 
-		//shaderNormal.Bind();
-		//Renderer::Get().curCamera->UpdateViewProjectionMatrix();
-		//Renderer::Get().RenderModels();
+		shaderNormal.Bind();
+		Renderer::Get().curCamera->UpdateViewProjectionMatrix();
+		Renderer::Get().RenderModels();
 
 		glfwSwapBuffers(window);
 	}

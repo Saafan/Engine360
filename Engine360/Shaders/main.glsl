@@ -38,18 +38,17 @@ uniform sampler2D textureSlot;
 
 const int WIDTH = 1920;
 const int HEIGHT = 1080;
-const int SPECULAR_EXPONENT = 16;
+const int SPECULAR_EXPONENT = 32;
 
 void main()
 {
-	vec3 ambientColor = vec3(1.0, 1.0f, 1.0f);
+	vec4 ambientColor = texture(textureSlot, i_tex);
 
 	float diffuse = max(dot(normalize(i_normal), normalize(lightPos - i_pos.xyz)), 0);
+	vec4 diffMap = diffuse * texture(textureSlot, i_tex);
 	float specular = pow(max(dot(normalize(cameraPos - i_pos.xyz), normalize(reflect(-(lightPos - i_pos.xyz), i_normal))), 0), SPECULAR_EXPONENT);
-
-	vec3 resultColor = (specular + ambientColor + diffuse);
-
-	vec4 result = texture(textureSlot, i_tex);
+	vec4 specMap = specular * texture(textureSlot, i_tex);
+	vec4 result = (specMap +  diffMap + ambientColor);
 
 	color = result;
 }

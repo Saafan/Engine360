@@ -4,6 +4,7 @@
 #include <fstream>
 #include "GL/glew.h"
 #include <glm/gtc/type_ptr.hpp>
+#include "glm/gtc/matrix_transform.hpp"
 
 Shader::Shader(const char* shaderPath)
 {
@@ -143,23 +144,94 @@ void Shader::SetUniformMat4(const char* name, glm::mat4&& value)
 	if (location != -1) glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(value));
 }
 
+void Shader::SetUniformMat4Positioned(const char* name, glm::vec3 pos, glm::mat4 originalPos)
+{
+	const int location = GetUniformLocation(name);
+	if (location != -1) glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(glm::translate(originalPos, pos)));
+}
+
+void Shader::SetUniformMat4Positioned(const char* name, float v0, float v1, float v2, glm::mat4 originalPos)
+{
+	const int location = GetUniformLocation(name);
+	if (location != -1) glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(glm::translate(originalPos, glm::vec3(v0, v1, v2))));
+}
+
 const char* Shader::GetName()
 {
 	return shaderName.c_str();
 }
 
+
+float Shader::GetFloatUniform(const char* name)
+{
+	float value = 0.0f;
+	glGetUniformfv(programID, GetUniformLocation(name), &value);
+	return value;
+}
+
+int Shader::GetIntUniform(const char* name)
+{
+	int value = 0.0f;
+	glGetUniformiv(programID, GetUniformLocation(name), &value);
+	return value;
+}
+
+glm::vec3 Shader::GetVec3Uniform(const char* name)
+{
+	glm::vec3 value = glm::vec3(0.0);
+	for (size_t i = 0; i < 3; i++)
+	{
+		float element;
+		std::string curName = name ;
+		curName += "[";
+		curName += std::to_string(i);
+		curName += "]";
+		
+		glGetUniformfv(programID, GetUniformLocation(curName.c_str()), &element);
+		value[i] = element;
+	}
+	return value;
+}
+
+glm::vec4 Shader::GetVec4Uniform(const char* name)
+{
+	glm::vec4 value;
+	for (size_t i = 0; i < 4; i++)
+	{
+		float element;
+		const char* curName = name + '.' + (char)('x' + i);
+		glGetUniformfv(programID, GetUniformLocation(curName), &element);
+		value[i] = element;
+	}
+	return value;
+}
+
+glm::mat4 Shader::GetMat4Uniform(const char* name)
+{
+	glm::mat4 value;
+	for (size_t i = 0; i < 4; i++)
+		for (size_t j = 0; j < 4; j++)
+		{
+			float element;
+			glGetUniformfv(programID, GetUniformLocation(name), &element);
+			value[i][j] = element;
+		}
+	return value;
+}
+
 unsigned int Shader::GetUniformLocation(const char* name)
 {
-	const char* listName = name + Renderer::Get().curShader->programID;
-
-	if (list.find(listName) == list.end())
+	if (list.find(name) == list.end())
 	{
 		const int location = glGetUniformLocation(programID, name);
 		if (location == -1)
+		{
 			std::cout << "Uniform " << name << " doesn't exist in Shader[ " << shaderName << " ]" << std::endl;
-		list[listName] = location;
+			return -1;
+		}
+		list[name] = location;
 		return location;
 	}
 
-	return list[listName];
+	return list[name];
 }

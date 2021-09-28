@@ -31,6 +31,7 @@
   <ItemGroup>
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\Data\ModelVertices.h" />
+    <ClInclude Include="src\Helpers\Printer.h" />
     <ClInclude Include="src\Model.h" />
     <ClInclude Include="src\Renderer\Renderer.h" />
     <ClInclude Include="src\Shader.h" />
@@ -40,6 +41,7 @@
     <ClInclude Include="src\VertexBuffer.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Shaders\LightBoxes.glsl" />
     <None Include="Shaders\main 2.glsl" />
     <None Include="Shaders\main.glsl" />
     <None Include="Shaders\normals.glsl" />
@@ -114,7 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\OpenGL\OpenGL\libs\GLEW\include;C:\OpenGL\OpenGL\libs\GLFW\include;C:\OpenGL\OpenGL\includes\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\OpenGL\OpenGL\libs\GLEW\include;C:\OpenGL\OpenGL\libs\GLFW\include;C:\OpenGL\OpenGL\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
