@@ -12,13 +12,13 @@ uniform mat4 model;
 uniform mat4 view;
 uniform mat4 proj;
 
-
 void main()
 {
 	mat4 mvp = proj * view * model;
 	gl_Position = mvp * vec4(pos, 1.0);
 	i_pos = model * vec4(pos, 1.0);
 	i_normal = mat3(transpose(inverse(model))) * normal;
+
 	i_tex = tex;
 }
 
@@ -49,6 +49,5 @@ void main()
 	float specular = pow(max(dot(normalize(cameraPos - i_pos.xyz), normalize(reflect(-(lightPos - i_pos.xyz), i_normal))), 0), SPECULAR_EXPONENT);
 	vec4 specMap = specular * texture(textureSlot, i_tex);
 	vec4 result = (specMap +  diffMap + ambientColor);
-
 	color = result;
 }
