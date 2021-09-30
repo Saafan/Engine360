@@ -1,12 +1,11 @@
+#include "Texture.h"
 #include "Renderer/Renderer.h"
 #include "stb_image/stb_image.h"
-
 
 Texture::Texture(const char* path, unsigned int slot)
 {
 	stbi_set_flip_vertically_on_load(true);
 	textureData = stbi_load(path, &width, &height, &bytePerPixel, 0);
-
 	glGenTextures(1, &textureID);
 	Bind(slot);
 
@@ -24,6 +23,8 @@ Texture::Texture(const char* path, unsigned int slot)
 		stbi_image_free(textureData);
 	else
 		std::cout << "Texture File is Not Found" << std::endl;
+
+	textureSlot = new Uniform<unsigned int>(SHADER_TEXTURE_SLOT, &slot, Renderer::Get().curShader);
 }
 
 Texture::~Texture()
@@ -39,14 +40,12 @@ void Texture::SetSlot(int slot)
 void Texture::Bind(int slot)
 {
 	this->slot = slot;
-	Renderer::Get().curShader->SetUniform1i(SHADER_TEXTURE_SLOT, slot);
 	glActiveTexture(GL_TEXTURE0 + slot);
 	glBindTexture(GL_TEXTURE_2D, textureID);
 }
 
 void Texture::Bind()
 {
-	Renderer::Get().curShader->SetUniform1i(SHADER_TEXTURE_SLOT, slot);
 	glActiveTexture(GL_TEXTURE0 + slot);
 	glBindTexture(GL_TEXTURE_2D, textureID);
 }

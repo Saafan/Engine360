@@ -8,7 +8,6 @@ glm::vec3& cameraPos = Renderer::Get().curCameraPos;
 
 glm::vec2 GetDeltaMouse()
 {
-
 	double* newX = &(Renderer::Get().x);
 	double* newY = &(Renderer::Get().y);
 	double oldX = *newX, oldY = *newY;
@@ -23,10 +22,16 @@ glm::vec2 GetDeltaMouse()
 	return glm::vec2((*newX - oldX), (*newY - oldY));
 }
 
+Camera::Camera()
+{
+	u_view = new Uniform<glm::mat4>(SHADER_VIEW, &view, Renderer::Get().curShader);
+	u_proj = new Uniform<glm::mat4>(SHADER_PROJ, &proj, Renderer::Get().curShader);
+	u_cameraPos = new Uniform<glm::vec3>(SHADER_CAMERA_POS, &cameraPos, Renderer::Get().curShader);
+}
+
 void Camera::Bind()
 {
 	proj = glm::perspective(glm::radians(60.0f), (float)WIDTH / (float)HEIGHT, 0.0001f, 1000.0f);
-	Renderer::Get().curShader->SetUniformMat4(SHADER_PROJ, proj);
 	Renderer::Get().curCamera = this;
 }
 
@@ -49,10 +54,6 @@ void Camera::Shoot2D()
 {
 	glm::mat4 ortho = glm::ortho(0.01f, (float)WIDTH, 0.01f, (float)HEIGHT, 0.001f, 1000.0f);
 	glm::mat4 view(1.0f);
-
-	Renderer::Get().UpdateCameraPosition();
-	Renderer::Get().curShader->SetUniformMat4(SHADER_PROJ, ortho);
-	Renderer::Get().curShader->SetUniformMat4(SHADER_VIEW, view);
 }
 
 void Camera::Shoot()
@@ -62,25 +63,14 @@ void Camera::Shoot()
 	yaw += delt.x * (double)CAMERA_SPEED;
 	pitch -= delt.y * (double)CAMERA_SPEED;
 
-	dir.x = glm::cos(glm::radians(yaw)) * glm::cos(glm::radians(pitch));
-	dir.y = glm::sin(glm::radians(pitch));
-	dir.z = glm::sin(glm::radians(yaw)) * glm::cos(glm::radians(pitch));
+	dir.x = glm::cos((float)glm::radians(yaw)) * (float)glm::cos(glm::radians(pitch));
+	dir.y = glm::sin((float)glm::radians(pitch));
+	dir.z = glm::sin((float)glm::radians(yaw)) * (float)glm::cos(glm::radians(pitch));
 	dir = glm::normalize(dir);
 
 	glfwSetKeyCallback(Renderer::Get().window, key_callback);
 
 	view = glm::lookAt(cameraPos, cameraPos + dir, glm::vec3(0.0f, 1.0f, 0.0f));
-	
-
-	Renderer::Get().UpdateCameraPosition();
-	Renderer::Get().curShader->SetUniformMat4(SHADER_VIEW, view);
-}
-
-void Camera::UpdateViewProjectionMatrix()
-{
-	Renderer::Get().curShader->SetUniformMat4(SHADER_PROJ, proj);
-	Renderer::Get().curShader->SetUniformMat4(SHADER_VIEW, view);
-	Renderer::Get().UpdateCameraPosition();
 }
 
 glm::mat4& Camera::GetProjectionMatrix()

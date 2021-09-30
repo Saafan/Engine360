@@ -5,11 +5,6 @@
 #include <string>
 #include <vector>
 
-#include "Shader.h"
-#include "Camera.h"
-#include "Model.h"
-#include "Texture.h"
-
 #include "Helpers/Printer.h"
 
 const int WIDTH = 1920;
@@ -21,8 +16,12 @@ const float CAMERA_MOTION_SPEED = 0.5f;
 #define SHADER_VIEW "view"
 #define SHADER_PROJ "proj"
 #define SHADER_TEXTURE_SLOT "textureSlot"
+#define SHADER_CAMERA_POS "cameraPos"
 
-#define CAMERA_POS "cameraPos"
+class UniformBase;
+namespace Model { class Model; }
+class Camera;
+class Shader;
 
 class Renderer
 {
@@ -32,7 +31,6 @@ public:
 
 	void RenderModels();
 	void RenderModels(Shader& shader);
-	void UpdateCameraPosition();
 
 	//Setters and Getters
 	void SetShader(Shader* shader);
@@ -55,36 +53,5 @@ public:
 
 	//Models
 	std::vector<Model::Model*> models;
+	std::vector<UniformBase*> uniforms;
 };
-
-inline void Renderer::UpdateCameraPosition()
-{
-	curShader->SetUniform3f(CAMERA_POS, curCameraPos);
-}
-
-inline void Renderer::SetShader(Shader* shader)
-{
-	curShader = shader;
-}
-
-inline void Renderer::RenderModels()
-{
-	for (const auto& model : models)
-		if (model->visible)
-			model->Render();
-}
-
-inline void Renderer::RenderModels(Shader& shader)
-{
-	Shader* tmp = curShader;
-	curShader = &shader;
-	shader.Bind();
-	curCamera->UpdateViewProjectionMatrix();
-
-	for (const auto& model : models)
-		if (model->visible)
-			model->Render();
-
-	curShader = tmp;
-	tmp->Bind();
-}

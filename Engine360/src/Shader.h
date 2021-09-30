@@ -4,30 +4,20 @@
 #include <string>
 #include <unordered_map>
 
-
 struct ShadersData {
 	std::string vertexShader;
 	std::string fragmentShader;
 	std::string geometryShader;
 };
 
-
 class Shader
 {
 public:
 	Shader(const char* shaderPath);
 	void Bind();
-	void SetUniform1f(const char* name, float value);
-	void SetUniform1i(const char* name, int value);
-	void SetUniform3f(const char* name, float v0, float v1, float v2);
-	void SetUniform3f(const char* name, glm::vec3 value);
-	void SetUniformMat4(const char* name, glm::mat4& value);
-	void SetUniformMat4(const char* name, glm::mat4&& value);
-
-	void SetUniformMat4Positioned(const char* name, glm::vec3 pos, glm::mat4 originalPos = glm::mat4(1.0f));
-	void SetUniformMat4Positioned(const char* name, float v0, float v1, float v2, glm::mat4 originalPos = glm::mat4(1.0f));
 
 	const char* GetName();
+	unsigned int GetProgramID();
 
 	float GetFloatUniform(const char* name);
 	int GetIntUniform(const char* name);

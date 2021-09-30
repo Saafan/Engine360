@@ -33,7 +33,8 @@ static void PrintMatrix(glm::mat4 matrix) {
 	for (int j = 0; j < n; j++) {
 		std::cout << std::endl << std::setw(2) << "|" << std::setw(1);
 		for (int i = 0; i < m; i++) {
-			std::cout << std::setw(maxLengthPerColumn[j] + 1);
+			const int maxLength = maxLengthPerColumn[j] + 1;
+			std::cout << std::setw(maxLength);
 			std::cout << matrix[i][j];
 			if (i == m - 1) std::cout << std::setw(1) << " |";
 		}

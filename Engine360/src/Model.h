@@ -2,6 +2,7 @@
 
 #include "VertexBuffer.h"
 #include "glm/glm.hpp"
+#include <Uniform.h>
 
 namespace Model
 {
@@ -14,7 +15,6 @@ namespace Model
 
 		void SetPosition(glm::vec3 value);
 		void SetPosition(float v1, float v2, float v3);
-
 	protected:
 		Model() ;
 		~Model();
@@ -27,6 +27,7 @@ namespace Model
 		bool indexed = false;
 		unsigned int count = 0;
 		unsigned int drawTarget = 0;
+		Uniform<glm::mat4>* u_model;
 
 	};
 

@@ -10,3 +10,11 @@ void Student::PrintStatic(int x)
 		std::cout << "Static m: " << m << std::endl;
 	}
 }
+
+
+
+template<typename t>
+void Student::Lol(t x)
+{
+
+}

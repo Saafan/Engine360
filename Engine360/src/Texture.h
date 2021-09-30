@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Uniform.h"
 class Texture
 {
 public:
@@ -15,4 +15,6 @@ private:
 	unsigned int textureID = 0;
 	int slot = 0;
 	unsigned char* textureData = 0;
+	Uniform<unsigned int>* textureSlot;
+	
 };

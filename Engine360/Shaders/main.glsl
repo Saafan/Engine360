@@ -39,7 +39,7 @@ uniform sampler2D textureSlot;
 const int WIDTH = 1920;
 const int HEIGHT = 1080;
 const int SPECULAR_EXPONENT = 32;
-
+uniform vec4 colorOut;
 void main()
 {
 	vec4 ambientColor = texture(textureSlot, i_tex);
@@ -49,5 +49,5 @@ void main()
 	float specular = pow(max(dot(normalize(cameraPos - i_pos.xyz), normalize(reflect(-(lightPos - i_pos.xyz), i_normal))), 0), SPECULAR_EXPONENT);
 	vec4 specMap = specular * texture(textureSlot, i_tex);
 	vec4 result = (specMap +  diffMap + ambientColor);
-	color = result;
+	color = colorOut;
 }

@@ -8,7 +8,6 @@ void Model::Model::Render()
 {
 	vb->Bind();
 
-	Renderer::Get().curShader->SetUniformMat4(SHADER_MODEL, model);
 	if (indexed)
 		glDrawElements(drawTarget, count, GL_UNSIGNED_INT, nullptr);
 	else
@@ -27,6 +26,7 @@ void Model::Model::SetPosition(float v1, float v2, float v3)
 
 Model::Model::Model()
 {
+	u_model = new Uniform<glm::mat4>(SHADER_MODEL, &model, Renderer::Get().curShader);
 	Renderer::Get().models.push_back(this);
 }
 

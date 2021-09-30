@@ -1,4 +1,10 @@
 #include "Renderer/Renderer.h"
+#include <vector>
+
+#include "Shader.h"
+#include "Camera.h"
+#include "Model.h"
+#include "Texture.h"
 
 int main()
 {
@@ -31,8 +37,7 @@ int main()
 	Texture tex("images/container.png");
 	tex.Bind();
 	
-	Renderer::Get().curShader->SetUniform3f("lightPos", 3, 2, 3);
-	
+	Uniform<glm::vec3> lightPosUniform();	
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -44,11 +49,9 @@ int main()
 		Renderer::Get().curCamera->Shoot();
 		
 		shader.Bind();
-		Renderer::Get().curCamera->UpdateViewProjectionMatrix();
 		Renderer::Get().RenderModels();
 
 		shaderNormal.Bind();
-		Renderer::Get().curCamera->UpdateViewProjectionMatrix();
 		Renderer::Get().RenderModels();
 
 		glfwSwapBuffers(window);

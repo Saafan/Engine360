@@ -1,6 +1,6 @@
+#include "Shader.h"
 #include "Renderer/Renderer.h"
-#include <iostream>
-#include <string>
+
 #include <fstream>
 #include "GL/glew.h"
 #include <glm/gtc/type_ptr.hpp>
@@ -107,60 +107,16 @@ void Shader::CreateProgram()
 	glDeleteShader(geomShaderID);
 }
 
-void Shader::SetUniform1f(const char* name, float value)
-{
-	const int location = GetUniformLocation(name);
-	if (location != -1) glUniform1f(GetUniformLocation(name), value);
-}
-
-void Shader::SetUniform1i(const char* name, int value)
-{
-	const int location = GetUniformLocation(name);
-	if (location != -1) glUniform1i(GetUniformLocation(name), value);
-}
-
-void Shader::SetUniform3f(const char* name, float v0, float v1, float v2)
-{
-	const int location = GetUniformLocation(name);
-	if (location != -1)  glUniform3f(location, v0, v1, v2);
-
-}
-
-void Shader::SetUniform3f(const char* name, glm::vec3 value)
-{
-	const int location = GetUniformLocation(name);
-	if (location != -1) glUniform3f(GetUniformLocation(name), value.x, value.y, value.z);
-}
-
-void Shader::SetUniformMat4(const char* name, glm::mat4& value)
-{
-	const int location = GetUniformLocation(name);
-	if (location != -1) glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(value));
-}
-
-void Shader::SetUniformMat4(const char* name, glm::mat4&& value)
-{
-	const int location = GetUniformLocation(name);
-	if (location != -1) glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(value));
-}
-
-void Shader::SetUniformMat4Positioned(const char* name, glm::vec3 pos, glm::mat4 originalPos)
-{
-	const int location = GetUniformLocation(name);
-	if (location != -1) glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(glm::translate(originalPos, pos)));
-}
-
-void Shader::SetUniformMat4Positioned(const char* name, float v0, float v1, float v2, glm::mat4 originalPos)
-{
-	const int location = GetUniformLocation(name);
-	if (location != -1) glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(glm::translate(originalPos, glm::vec3(v0, v1, v2))));
-}
 
 const char* Shader::GetName()
 {
 	return shaderName.c_str();
 }
 
+unsigned int Shader::GetProgramID()
+{
+	return programID;
+}
 
 float Shader::GetFloatUniform(const char* name)
 {
@@ -171,7 +127,7 @@ float Shader::GetFloatUniform(const char* name)
 
 int Shader::GetIntUniform(const char* name)
 {
-	int value = 0.0f;
+	int value = 0;
 	glGetUniformiv(programID, GetUniformLocation(name), &value);
 	return value;
 }
