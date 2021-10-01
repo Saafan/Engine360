@@ -3,9 +3,11 @@
 #include "GLFW\glfw3.h"
 
 #include <string>
+#include <iostream>
 #include <vector>
 
 #include "Helpers/Printer.h"
+#include "glm/fwd.hpp"
 
 const int WIDTH = 1920;
 const int HEIGHT = 1080;
@@ -26,7 +28,7 @@ class Shader;
 class Renderer
 {
 public:
-	Renderer() = default;
+	Renderer();
 	Renderer(const Renderer&) = delete;
 
 	void RenderModels();
@@ -47,11 +49,11 @@ public:
 
 	//Camera
 	Camera* curCamera = nullptr;
-	glm::vec3 curCameraPos = glm::vec3(0.0f, 0.5f, 1.5f);
+	glm::vec3* curCameraPos;
 	double x = 0.0, y = 0.0;
 	
 
 	//Models
 	std::vector<Model::Model*> models;
-	std::vector<UniformBase*> uniforms;
+	std::vector<UniformBase> uniforms;
 };

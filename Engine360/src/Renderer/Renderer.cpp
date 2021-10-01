@@ -1,3 +1,4 @@
+#include "glm/glm.hpp"
 #include "Renderer.h"
 
 #include"Model.h"
@@ -9,11 +10,16 @@ void Renderer::SetShader(Shader* shader)
 	curShader = shader;
 }
 
+Renderer::Renderer()
+{
+	*curCameraPos = glm::vec3(0.0f, 0.5f, 1.5f);
+}
+
 void Renderer::RenderModels()
 {
 	for (const auto& uniform : uniforms)
-		if (uniform->isChanged)
-			uniform->UpdateShaderUniform();
+		if (uniform.isChanged)
+			uniform.UpdateShaderUniform();
 	for (const auto& model : models)
 		if (model->visible)
 			model->Render();

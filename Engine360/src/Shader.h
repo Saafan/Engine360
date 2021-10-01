@@ -1,8 +1,8 @@
 #pragma once
 
-#include "glm/glm.hpp"
 #include <string>
 #include <unordered_map>
+#include "glm/fwd.hpp"
 
 struct ShadersData {
 	std::string vertexShader;

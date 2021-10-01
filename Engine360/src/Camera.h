@@ -1,6 +1,6 @@
 #pragma once
-#include "glm/glm.hpp"
 #include "Uniform.h"
+#include "glm/fwd.hpp"
 
 class Camera {
 public:
@@ -15,9 +15,9 @@ public:
 	glm::mat4& GetViewMatrix();
 
 private:
-	glm::mat4 view = glm::mat4(1.0f);
-	glm::mat4 proj = glm::mat4(1.0f);
-	double yaw = -90.0, pitch = 0;
+	glm::mat4* view;
+	glm::mat4* proj;
+	double yaw = -90.0, pitch = 0.0;
 
 	Uniform<glm::mat4>* u_proj = nullptr, * u_view = nullptr;
 	Uniform<glm::vec3>* u_cameraPos= nullptr;

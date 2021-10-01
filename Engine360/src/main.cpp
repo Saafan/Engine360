@@ -1,5 +1,5 @@
 #include "Renderer/Renderer.h"
-#include <vector>
+
 
 #include "Shader.h"
 #include "Camera.h"
@@ -37,7 +37,7 @@ int main()
 	Texture tex("images/container.png");
 	tex.Bind();
 	
-	Uniform<glm::vec3> lightPosUniform();	
+	Uniform<glm::vec3> lightPosUniform("lightPos",glm::vec3(1,1,2),Renderer::Get().curShader);	
 
 	while (!glfwWindowShouldClose(window))
 	{

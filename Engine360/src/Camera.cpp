@@ -1,10 +1,12 @@
+#include "glm/glm.hpp"
 #include "Camera.h"
 #include "Renderer/Renderer.h"
 #include "GLFW/glfw3.h"
+
 #include "glm/gtc/matrix_transform.hpp"
 
 glm::vec3 dir;
-glm::vec3& cameraPos = Renderer::Get().curCameraPos;
+glm::vec3& cameraPos = *(Renderer::Get().curCameraPos);
 
 glm::vec2 GetDeltaMouse()
 {
@@ -24,14 +26,16 @@ glm::vec2 GetDeltaMouse()
 
 Camera::Camera()
 {
-	u_view = new Uniform<glm::mat4>(SHADER_VIEW, &view, Renderer::Get().curShader);
-	u_proj = new Uniform<glm::mat4>(SHADER_PROJ, &proj, Renderer::Get().curShader);
+	view = new glm::mat4(1.0f);
+	proj = new glm::mat4(1.0f);
+	u_view = new Uniform<glm::mat4>(SHADER_VIEW, view, Renderer::Get().curShader);
+	u_proj = new Uniform<glm::mat4>(SHADER_PROJ, proj, Renderer::Get().curShader);
 	u_cameraPos = new Uniform<glm::vec3>(SHADER_CAMERA_POS, &cameraPos, Renderer::Get().curShader);
 }
 
 void Camera::Bind()
 {
-	proj = glm::perspective(glm::radians(60.0f), (float)WIDTH / (float)HEIGHT, 0.0001f, 1000.0f);
+	*proj = glm::perspective(glm::radians(60.0f), (float)WIDTH / (float)HEIGHT, 0.0001f, 1000.0f);
 	Renderer::Get().curCamera = this;
 }
 
@@ -70,15 +74,15 @@ void Camera::Shoot()
 
 	glfwSetKeyCallback(Renderer::Get().window, key_callback);
 
-	view = glm::lookAt(cameraPos, cameraPos + dir, glm::vec3(0.0f, 1.0f, 0.0f));
+	*view = glm::lookAt(cameraPos, cameraPos + dir, glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 glm::mat4& Camera::GetProjectionMatrix()
 {
-	return proj;
+	return *proj;
 }
 
 glm::mat4& Camera::GetViewMatrix()
 {
-	return view;
+	return *view;
 }
