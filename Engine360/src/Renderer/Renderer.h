@@ -55,5 +55,5 @@ public:
 
 	//Models
 	std::vector<Model::Model*> models;
-	std::vector<UniformBase> uniforms;
+	std::vector<UniformBase*> uniforms;
 };
