@@ -3,7 +3,7 @@
 class Texture
 {
 public:
-	Texture(const char* path, unsigned int slot = 0);
+	Texture(const char* path, int slot = 0);
 	~Texture();
 	void Bind();
 	void Bind(int slot);
@@ -15,6 +15,6 @@ private:
 	unsigned int textureID = 0;
 	int slot = 0;
 	unsigned char* textureData = 0;
-	Uniform<unsigned int>* textureSlot;
+	Uniform<int>* textureSlot;
 	
 };

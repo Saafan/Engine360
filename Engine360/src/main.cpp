@@ -1,6 +1,5 @@
 #include "Renderer/Renderer.h"
 
-
 #include "Shader.h"
 #include "Camera.h"
 #include "Model.h"
@@ -8,7 +7,7 @@
 
 int main()
 {
-	GLFWwindow* &window = Renderer::Get().window;
+	GLFWwindow*& window = Renderer::Get().window;
 	if (!glfwInit())
 		std::cout << "Initialization of GLFW Failed!" << std::endl;
 
@@ -32,22 +31,24 @@ int main()
 	shader.Bind();
 
 	Model::Cube cone(1.0f, 1.0f, 1.0f);
+	Model::Cone cone2(1.0f, 1.0f, 16);
 	Camera c;
 	c.Bind();
 	Texture tex("images/container.png");
 	tex.Bind();
-	
-	Uniform<glm::vec3> lightPosUniform("lightPos",glm::vec3(1,1,2),Renderer::Get().curShader);	
 
+	Uniform<glm::vec3> lightPosUniform("lightPos", glm::vec3(1, 1, 2), Renderer::Get().curShader, true);
+	Uniform<glm::mat4> projUniform("u_proj", c.GetProjectionMatrix(), &shaderNormal, true);
 	while (!glfwWindowShouldClose(window))
 	{
 		glfwPollEvents();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.2f, 0.5f, 0.8f, 1.0f);
 		glEnable(GL_DEPTH_TEST);
+
 		//Drawing Begins here
 		Renderer::Get().curCamera->Shoot();
-		
+
 		shader.Bind();
 		Renderer::Get().RenderModels();
 

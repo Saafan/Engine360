@@ -14,7 +14,7 @@ static int NumberOfDigits(double n) {
 	return m;
 }
 
-static void PrintMatrix(glm::mat4 matrix) {
+void PrintMatrix(glm::mat4 matrix) {
 	const size_t nmax = 100;
 	int maxLengthPerColumn[nmax];
 	const int m = 4;
@@ -39,5 +39,53 @@ static void PrintMatrix(glm::mat4 matrix) {
 			if (i == m - 1) std::cout << std::setw(1) << " |";
 		}
 	}
+}
+
+bool UniformEquals(int v1, int v2)
+{
+	return v1 == v2;
+}
+
+bool UniformEquals(unsigned int v1, unsigned int v2)
+{
+	return v1 == v2;
+}
+
+bool UniformEquals(float v1, float v2)
+{
+	return v1 == v2;
+}
+
+bool UniformEquals(glm::vec2 v1, glm::vec2 v2)
+{
+	return (v1.x == v2.x && v1.y == v2.y);
+}
+
+bool UniformEquals(glm::vec3 v1, glm::vec3 v2)
+{
+	return (v1.x == v2.x && v1.y == v2.y && v1.z == v2.z);
+}
+
+bool UniformEquals(glm::vec4 v1, glm::vec4 v2)
+{
+	return (v1.x == v2.x && v1.y == v2.y && v1.z == v2.z && v1.w == v2.w);
+}
+
+bool UniformEquals(glm::mat3 v1, glm::mat3 v2)
+{
+	for (size_t i = 0; i < 3; i++)
+		for (size_t j = 0; j < 3; j++)
+			if (v1[i][j] != v2[i][j])
+				return false;
+	return true;
+}
+
+bool UniformEquals(glm::mat4 v1, glm::mat4 v2)
+{
+	for (size_t i = 0; i < 4; i++)
+		for (size_t j = 0; j < 4; j++)
+			if (v1[i][j] != v2[i][j])
+				return false;
+	return true;
 }
 

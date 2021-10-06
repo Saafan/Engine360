@@ -20,6 +20,15 @@ Shader::Shader(const char* shaderPath)
 	GetShaderCode(file);
 	CreateProgram();
 	Bind();
+	Renderer::Get().shaders.emplace_back(this);
+}
+
+Shader::~Shader()
+{
+	std::vector<Shader*>& shaders = Renderer::Get().shaders;
+	for (size_t i = 0; i < shaders.size(); i++)
+		if (shaders.at(i) == this)
+			shaders.erase(shaders.begin() + i);
 }
 
 void Shader::Bind()
@@ -65,7 +74,7 @@ unsigned int Shader::CompileShader(std::string& srcCode, unsigned int shaderType
 		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &size);
 		char* message = (char*)malloc(size * sizeof(char));
 		glGetShaderInfoLog(shader, size * sizeof(char), nullptr, message);
-		std::cout << "Message: " << message << std::endl;
+		std::cout << "Message: " << "File: " << shaderName << "  " << message << std::endl;
 	}
 	return shader;
 }
@@ -116,78 +125,4 @@ const char* Shader::GetName()
 unsigned int Shader::GetProgramID()
 {
 	return programID;
-}
-
-float Shader::GetFloatUniform(const char* name)
-{
-	float value = 0.0f;
-	glGetUniformfv(programID, GetUniformLocation(name), &value);
-	return value;
-}
-
-int Shader::GetIntUniform(const char* name)
-{
-	int value = 0;
-	glGetUniformiv(programID, GetUniformLocation(name), &value);
-	return value;
-}
-
-glm::vec3 Shader::GetVec3Uniform(const char* name)
-{
-	glm::vec3 value = glm::vec3(0.0);
-	for (size_t i = 0; i < 3; i++)
-	{
-		float element;
-		std::string curName = name ;
-		curName += "[";
-		curName += std::to_string(i);
-		curName += "]";
-		
-		glGetUniformfv(programID, GetUniformLocation(curName.c_str()), &element);
-		value[i] = element;
-	}
-	return value;
-}
-
-glm::vec4 Shader::GetVec4Uniform(const char* name)
-{
-	glm::vec4 value;
-	for (size_t i = 0; i < 4; i++)
-	{
-		float element;
-		const char* curName = name + '.' + (char)('x' + i);
-		glGetUniformfv(programID, GetUniformLocation(curName), &element);
-		value[i] = element;
-	}
-	return value;
-}
-
-glm::mat4 Shader::GetMat4Uniform(const char* name)
-{
-	glm::mat4 value;
-	for (size_t i = 0; i < 4; i++)
-		for (size_t j = 0; j < 4; j++)
-		{
-			float element;
-			glGetUniformfv(programID, GetUniformLocation(name), &element);
-			value[i][j] = element;
-		}
-	return value;
-}
-
-unsigned int Shader::GetUniformLocation(const char* name)
-{
-	if (list.find(name) == list.end())
-	{
-		const int location = glGetUniformLocation(programID, name);
-		if (location == -1)
-		{
-			std::cout << "Uniform " << name << " doesn't exist in Shader[ " << shaderName << " ]" << std::endl;
-			return -1;
-		}
-		list[name] = location;
-		return location;
-	}
-
-	return list[name];
 }

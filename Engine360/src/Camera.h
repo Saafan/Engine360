@@ -2,6 +2,8 @@
 #include "Uniform.h"
 #include "glm/fwd.hpp"
 
+class UniformBlock;
+
 class Camera {
 public:
 	Camera();
@@ -19,7 +21,7 @@ private:
 	glm::mat4* proj;
 	double yaw = -90.0, pitch = 0.0;
 
-	Uniform<glm::mat4>* u_proj = nullptr, * u_view = nullptr;
-	Uniform<glm::vec3>* u_cameraPos= nullptr;
+	//Uniform<glm::mat4>* u_proj = nullptr, * u_view = nullptr;
+	//Uniform<glm::vec3>* u_cameraPos= nullptr;
+	UniformBlock* viewProjBlock;
 };
-

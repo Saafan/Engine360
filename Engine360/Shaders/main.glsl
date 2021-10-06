@@ -9,8 +9,14 @@ out vec3 i_normal;
 out vec2 i_tex;
 
 uniform mat4 model;
-uniform mat4 view;
-uniform mat4 proj;
+//uniform mat4 view;
+//uniform mat4 proj;
+
+layout(std140) uniform Matrices
+{
+	mat4 proj;
+	mat4 view;
+};
 
 void main()
 {
@@ -49,5 +55,5 @@ void main()
 	float specular = pow(max(dot(normalize(cameraPos - i_pos.xyz), normalize(reflect(-(lightPos - i_pos.xyz), i_normal))), 0), SPECULAR_EXPONENT);
 	vec4 specMap = specular * texture(textureSlot, i_tex);
 	vec4 result = (specMap +  diffMap + ambientColor);
-	color = colorOut;
+	color = result;
 }

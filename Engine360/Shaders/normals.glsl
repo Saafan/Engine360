@@ -6,8 +6,15 @@ out VS_OUT{
 	vec3 normal;
 } vs_out;
 
-uniform mat4 view;
+//uniform mat4 view;
 uniform mat4 model;
+
+layout(std140) uniform Matrices
+{
+	mat4 proj;
+	mat4 view;
+};
+
 
 void main()
 {
@@ -15,8 +22,6 @@ void main()
 	mat3 normalMatrix = mat3(transpose(inverse(view * model)));
 	vs_out.normal = normalize(vec3(vec4(normalMatrix * aNormal, 0.0)));
 }
-
-
 
 #geometry
 
@@ -30,13 +35,12 @@ in VS_OUT{
 
 const float MAGNITUDE = 0.1;
 
-uniform mat4 proj;
-
+uniform mat4 u_proj;
 void GenerateLine(int index)
 {
-	gl_Position = proj * gl_in[index].gl_Position;
+	gl_Position = u_proj * gl_in[index].gl_Position;
 	EmitVertex();
-	gl_Position = proj * (gl_in[index].gl_Position +
+	gl_Position = u_proj * (gl_in[index].gl_Position +
 		vec4(gs_in[index].normal, 0.0) * MAGNITUDE);
 	EmitVertex();
 	EndPrimitive();

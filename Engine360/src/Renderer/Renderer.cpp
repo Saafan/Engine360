@@ -12,14 +12,17 @@ void Renderer::SetShader(Shader* shader)
 
 Renderer::Renderer()
 {
-	*curCameraPos = glm::vec3(0.0f, 0.5f, 1.5f);
+	curCameraPos = new glm::vec3(0.0f, 0.5f, 1.5f);
 }
 
 void Renderer::RenderModels()
 {
-	for (const auto& uniform : uniforms)
-		if (uniform.isChanged)
-			uniform.UpdateShaderUniform();
+	for (const auto& uniform : curShader->uniforms)
+			uniform->UpdateShaderUniform();
+
+	for (const auto& uniformBlock : uniformBlocks)
+		uniformBlock->UpdateBlockUniform();
+
 	for (const auto& model : models)
 		if (model->visible)
 			model->Render();
@@ -38,5 +41,3 @@ void Renderer::RenderModels(Shader& shader)
 	curShader = tmp;
 	tmp->Bind();
 }
-
-

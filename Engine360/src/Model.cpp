@@ -27,7 +27,7 @@ void Model::Model::SetPosition(float v1, float v2, float v3)
 Model::Model::Model()
 {
 	u_model = new Uniform<glm::mat4>(SHADER_MODEL, &model, Renderer::Get().curShader);
-	Renderer::Get().models.push_back(this);
+	Renderer::Get().models.emplace_back(this);
 }
 
 Model::Model::~Model()
@@ -207,7 +207,7 @@ Model::Cone::Cone(float radius, float height, unsigned int sides, bool visible)
 	}
 
 	size_t counter = 0;
-	for (size_t i = 0; i < vertices.size() / 4-1; i++)
+	for (size_t i = 0; i < vertices.size() / 4 - 1; i++)
 	{
 		indices.emplace_back(counter++);
 		indices.emplace_back(counter++);

@@ -2,7 +2,7 @@
 #include "Renderer/Renderer.h"
 #include "stb_image/stb_image.h"
 
-Texture::Texture(const char* path, unsigned int slot)
+Texture::Texture(const char* path, int slot)
 {
 	stbi_set_flip_vertically_on_load(true);
 	textureData = stbi_load(path, &width, &height, &bytePerPixel, 0);
@@ -24,7 +24,7 @@ Texture::Texture(const char* path, unsigned int slot)
 	else
 		std::cout << "Texture File is Not Found" << std::endl;
 
-	textureSlot = new Uniform<unsigned int>(SHADER_TEXTURE_SLOT, &slot, Renderer::Get().curShader);
+	textureSlot = new Uniform<int>(SHADER_TEXTURE_SLOT, &(this->slot), Renderer::Get().curShader);
 }
 
 Texture::~Texture()

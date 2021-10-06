@@ -25,9 +25,9 @@
     <ClCompile Include="src\Model.cpp" />
     <ClCompile Include="src\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Shader.cpp" />
-    <ClCompile Include="src\Test\Test.cpp" />
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\Uniform.cpp" />
+    <ClCompile Include="src\UniformBlock.cpp" />
     <ClCompile Include="src\vendors\stb_image\stb_image.cpp" />
     <ClCompile Include="src\VertexBuffer.cpp" />
   </ItemGroup>
@@ -38,7 +38,6 @@
     <ClInclude Include="src\Model.h" />
     <ClInclude Include="src\Renderer\Renderer.h" />
     <ClInclude Include="src\Shader.h" />
-    <ClInclude Include="src\Test\Test.h" />
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\Uniform.h" />
     <ClInclude Include="src\vendors\stb_image\stb_image.h" />
@@ -49,6 +48,7 @@
     <None Include="Shaders\main 2.glsl" />
     <None Include="Shaders\main.glsl" />
     <None Include="Shaders\normals.glsl" />
+    <None Include="src\UniformBlock.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

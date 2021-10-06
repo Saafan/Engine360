@@ -1,20 +1,17 @@
 #include <iostream>
 #include "Test.h"
-
-void Student::PrintStatic(int x)
+#include <vector>
+void Base::Helper()
 {
-	static int m;
-	if (x != m)
-	{
-		m = x;
-		std::cout << "Static m: " << m << std::endl;
-	}
+	std::cout << "Base Helper" << std::endl;
 }
 
-
-
-template<typename t>
-void Student::Lol(t x)
+int main()
 {
-
+	std::vector<Base*> v;
+	Base* b;
+	Derived<int> d;
+	v.emplace_back(&d);
+	v[0]->Helper();
+	return 0;
 }

@@ -5,9 +5,11 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <memory>
 
 #include "Helpers/Printer.h"
 #include "glm/fwd.hpp"
+#include "UniformBlock.h"
 
 const int WIDTH = 1920;
 const int HEIGHT = 1080;
@@ -46,6 +48,8 @@ public:
 
 	//Shaders
 	Shader* curShader = nullptr;
+	std::vector<Shader*> shaders;
+	std::vector<UniformBlock*> uniformBlocks;
 
 	//Camera
 	Camera* curCamera = nullptr;
@@ -55,5 +59,4 @@ public:
 
 	//Models
 	std::vector<Model::Model*> models;
-	std::vector<UniformBase> uniforms;
 };

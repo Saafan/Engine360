@@ -4,6 +4,7 @@
 #include "GLFW/glfw3.h"
 
 #include "glm/gtc/matrix_transform.hpp"
+#include "UniformBlock.h"
 
 glm::vec3 dir;
 glm::vec3& cameraPos = *(Renderer::Get().curCameraPos);
@@ -28,9 +29,11 @@ Camera::Camera()
 {
 	view = new glm::mat4(1.0f);
 	proj = new glm::mat4(1.0f);
-	u_view = new Uniform<glm::mat4>(SHADER_VIEW, view, Renderer::Get().curShader);
-	u_proj = new Uniform<glm::mat4>(SHADER_PROJ, proj, Renderer::Get().curShader);
-	u_cameraPos = new Uniform<glm::vec3>(SHADER_CAMERA_POS, &cameraPos, Renderer::Get().curShader);
+
+	viewProjBlock = new UniformBlock("Matrices", 0, false);
+	viewProjBlock->InsertData("proj", glm::value_ptr(*proj), sizeof(*proj));
+	viewProjBlock->InsertData("view", glm::value_ptr(*view), sizeof(*view));
+	viewProjBlock->Bind();
 }
 
 void Camera::Bind()
