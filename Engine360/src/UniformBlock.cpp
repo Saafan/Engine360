@@ -4,17 +4,30 @@
 #include "Shader.h"
 #include "glm/glm.hpp"
 
-UniformBlock::UniformBlock(const char* blockName, unsigned int bindingPoint, bool isStatic)
+UniformBlock::UniformBlock(const char* blockName, unsigned int bindingPoint, Shader* shader, bool isStatic)
 {
 	this->blockName = blockName;
 	this->bindingPoint = bindingPoint;
-	for (const auto& shader : Renderer::Get().shaders)
+	for (auto& shaderRef : Renderer::Get().shaders)
 	{
-		const unsigned int programID = shader->GetProgramID();
+		if (shader != nullptr)
+			shaderRef = shader;
+
+		const unsigned int programID = shaderRef->GetProgramID();
 		const unsigned int blockIndex = glGetUniformBlockIndex(programID, blockName);
+
+		if (blockIndex == GL_INVALID_INDEX)
+		{
+			std::cout << "Uniform Block " << blockName << " doesn't exist in Shader[ " << shaderRef->GetName() << " ]" << std::endl;
+			continue;
+		}
+
 		glUniformBlockBinding(programID, blockIndex, bindingPoint);
+		if (shader != nullptr)
+			break;
 	}
 	drawingFlag = isStatic ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW;
+
 	Renderer::Get().uniformBlocks.emplace_back(this);
 }
 
@@ -31,7 +44,7 @@ void UniformBlock::UpdateBlockUniform()
 	for (auto& uniformBlock : blockData)
 	{
 		SignleUniform& singleUniform = uniformBlock.second;
-			if (memcmp(singleUniform.data, singleUniform.oldData, singleUniform.size) == 0)
+		if (memcmp(singleUniform.data, singleUniform.oldData, singleUniform.size) == 0)
 			continue;
 		memcpy(singleUniform.oldData, singleUniform.data, singleUniform.size);
 		EditData(uniformBlock.first, singleUniform.data);

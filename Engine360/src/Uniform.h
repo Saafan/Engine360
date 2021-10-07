@@ -29,18 +29,81 @@ template <typename type>
 class Uniform : public UniformBase
 {
 public:
-	Uniform(const char* name, type* dataPtr, Shader* shader, bool isStatic = false);
-	Uniform(const char* name, type data, Shader* shader, bool isStatic = false);
+	Uniform(const char* name, type* dataPtr, Shader* shader, unsigned int count = 1, bool isStatic = false);
+	Uniform(const char* name, type& data, Shader* shader, unsigned int count = 1, bool isStatic = false);
+	Uniform(const char* name, type&& data, Shader* shader, unsigned int count = 1, bool isStatic = false);
+	void AddShader(Shader* shader);
 	void SetData(type* dataPtr);
 	void SetData(type data);
 	void UpdateShaderUniform();
 	void Report();
 private:
-	
+
 	void UpdateShaderUniformHelper();
 	type* data = nullptr;
 	type oldData = type();
 };
+
+template <typename type>
+void Uniform<type>::AddShader(Shader* shader)
+{
+	shader->uniforms.emplace_back(this);
+}
+
+template <typename type>
+inline
+Uniform<type>::Uniform(const char* name, type* dataPtr, Shader* shader, unsigned int count, bool isStatic)
+	: UniformBase(name, shader, isStatic)
+{
+	data = dataPtr;
+	if (!isStatic)
+	{
+		if (shader == nullptr)
+			for (const auto& shader : Renderer::Get().shaders)
+				shader->uniforms.emplace_back(this);
+		else
+			shader->uniforms.emplace_back(this);
+	}
+	else
+		UpdateShaderUniform();
+}
+
+template <typename type>
+inline
+Uniform<type>::Uniform(const char* name, type& data, Shader* shader, unsigned int count, bool isStatic)
+	: UniformBase(name, shader, isStatic)
+{
+	this->data = &data;
+	if (!isStatic)
+	{
+		if (shader == nullptr)
+			for (const auto& shader : Renderer::Get().shaders)
+				shader->uniforms.emplace_back(this);
+		else
+			shader->uniforms.emplace_back(this);
+	}
+	else
+		UpdateShaderUniform();
+}
+
+template <typename type>
+inline
+Uniform<type>::Uniform(const char* name, type&& data, Shader* shader, unsigned int count, bool isStatic)
+	: UniformBase(name, shader, isStatic)
+{
+	this->data = new type(data);
+	if (!isStatic)
+	{
+		if (shader == nullptr)
+			for (const auto& shader : Renderer::Get().shaders)
+				shader->uniforms.emplace_back(this);
+		else
+			shader->uniforms.emplace_back(this);
+	}
+	else
+		UpdateShaderUniform();
+}
+
 
 template <typename type>
 void Uniform<type>::UpdateShaderUniform()
@@ -91,30 +154,6 @@ inline
 void Uniform<glm::mat4>::UpdateShaderUniformHelper()
 {
 	glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(*data));
-}
-
-template <typename type>
-inline
-Uniform<type>::Uniform(const char* name, type* dataPtr, Shader* shader, bool isStatic)
-	: UniformBase(name, shader, isStatic)
-{
-	data = dataPtr;
-	if (!isStatic)
-		shader->uniforms.emplace_back(this);
-	else
-		UpdateShaderUniform();
-}
-
-template <typename type>
-inline
-Uniform<type>::Uniform(const char* name, type data, Shader* shader, bool isStatic)
-	: UniformBase(name, shader, isStatic)
-{
-	this->data = &data;
-	if (!isStatic)
-		shader->uniforms.emplace_back(this);
-	else
-		UpdateShaderUniform();
 }
 
 template <typename type>
@@ -173,7 +212,7 @@ template <>
 inline
 void Uniform<glm::mat4>::Report()
 {
-	std::cout << "Name: " << name <<  " Old Value: " << std::endl;
+	std::cout << "Name: " << name << " Old Value: " << std::endl;
 	PrintMatrix(oldData);
 	std::cout << std::endl << "Name: " << name << " New Value: " << std::endl;
 	PrintMatrix(*data);

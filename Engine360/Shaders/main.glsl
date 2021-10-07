@@ -9,13 +9,28 @@ out vec3 i_normal;
 out vec2 i_tex;
 
 uniform mat4 model;
-//uniform mat4 view;
-//uniform mat4 proj;
 
 layout(std140) uniform Matrices
 {
 	mat4 proj;
 	mat4 view;
+};
+
+struct Material {
+	vec4 ambientColor;
+	vec4 diffuseColor;
+	vec4 specularColor;
+
+	sampler2D ambientTex;
+	sampler2D diffuseTex;
+	sampler2D specularTex;
+
+	float shininess;
+};
+
+layout(std140) uniform materialBlock
+{
+	Material materials[10];
 };
 
 void main()

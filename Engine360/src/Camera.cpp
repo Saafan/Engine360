@@ -30,7 +30,7 @@ Camera::Camera()
 	view = new glm::mat4(1.0f);
 	proj = new glm::mat4(1.0f);
 
-	viewProjBlock = new UniformBlock("Matrices", 0, false);
+	viewProjBlock = new UniformBlock("Matrices", 0, nullptr, false);
 	viewProjBlock->InsertData("proj", glm::value_ptr(*proj), sizeof(*proj));
 	viewProjBlock->InsertData("view", glm::value_ptr(*view), sizeof(*view));
 	viewProjBlock->Bind();
@@ -41,7 +41,6 @@ void Camera::Bind()
 	*proj = glm::perspective(glm::radians(60.0f), (float)WIDTH / (float)HEIGHT, 0.0001f, 1000.0f);
 	Renderer::Get().curCamera = this;
 }
-
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {

@@ -1,6 +1,8 @@
 #pragma once
 #include <map>
 
+class Shader;
+
 struct SignleUniform
 {
 	SignleUniform(const void* data, size_t size, size_t sizeBefore) 
@@ -18,7 +20,7 @@ struct SignleUniform
 class UniformBlock
 {
 public:
-	UniformBlock(const char* blockName, unsigned int bindingPoint, bool isStatic = true);
+	UniformBlock(const char* blockName, unsigned int bindingPoint, Shader* shader = nullptr, bool isStatic = true);
 	~UniformBlock();
 	void InsertData(const char* uniformName, const void* data, size_t size);
 	void EditData(const char* name,const void* data);
