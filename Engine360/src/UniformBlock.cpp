@@ -10,7 +10,7 @@ UniformBlock::UniformBlock(const char* blockName, unsigned int bindingPoint, Sha
 	this->bindingPoint = bindingPoint;
 	for (auto& shaderRef : Renderer::Get().shaders)
 	{
-		if (shader != nullptr)
+		if (shader)
 			shaderRef = shader;
 
 		const unsigned int programID = shaderRef->GetProgramID();
@@ -23,7 +23,7 @@ UniformBlock::UniformBlock(const char* blockName, unsigned int bindingPoint, Sha
 		}
 
 		glUniformBlockBinding(programID, blockIndex, bindingPoint);
-		if (shader != nullptr)
+		if (shader)
 			break;
 	}
 	drawingFlag = isStatic ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW;
@@ -61,6 +61,11 @@ void UniformBlock::EditData(const char* name, const void* data)
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
+void UniformBlock::SetShader(Shader* shader)
+{
+	
+}
+
 void UniformBlock::Bind()
 {
 	glGenBuffers(1, &ubID);
@@ -79,11 +84,4 @@ void UniformBlock::Bind()
 		offset += data.second.size;
 	}
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
-}
-
-void UniformBlock::InsertData(const char* uniformName, const void* data, size_t size)
-{
-	SignleUniform singleUniform{ data, size, blockSize };
-	blockData[uniformName] = singleUniform;
-	blockSize += size;
 }

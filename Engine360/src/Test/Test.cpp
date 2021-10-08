@@ -1,17 +1,28 @@
 #include <iostream>
 #include "Test.h"
 #include <vector>
-void Base::Helper()
+
+int Student::numOfStudents = 0;
+
+Student::Student()
 {
-	std::cout << "Base Helper" << std::endl;
+	numOfStudents++;
+}
+
+Student::~Student()
+{
+	numOfStudents--;
 }
 
 int main()
 {
-	std::vector<Base*> v;
-	Base* b;
-	Derived<int> d;
-	v.emplace_back(&d);
-	v[0]->Helper();
+	Student* s1 = new Student();
+	Student* s2 = new Student();
+	Student* s3 = new Student();
+	std::cout << s1->numOfStudents << std::endl;
+	delete s3;
+	std::cout << s1->numOfStudents << std::endl;
+	delete s2;
+	std::cout << s1->numOfStudents << std::endl;
 	return 0;
 }

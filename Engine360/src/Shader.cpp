@@ -37,6 +37,28 @@ void Shader::Bind()
 	Renderer::Get().SetShader(this);
 }
 
+void Shader::Report()
+{
+	std::cout << "Name: "<< shaderName << std::endl;
+	std::cout << "Vertex Shader: " << shaderData.vertexShader << std::endl << std::endl;
+	std::cout << "Geometry Shader: " << shaderData.geometryShader << std::endl << std::endl;
+	std::cout << "Fragment Shader: " << shaderData.fragmentShader << std::endl << std::endl;
+}
+
+std::string ReplaceMacros(std::string& line)
+{
+	for (const auto& macro : shaderMacros)
+	{
+		size_t pos = line.find(macro.first);
+		if (pos != std::string::npos)
+		{
+			line.replace(pos, macro.first.length(), macro.second);
+			ReplaceMacros(line);
+		}
+	}
+	return line;
+}
+
 void Shader::GetShaderCode(std::ifstream& file)
 {
 	std::string line;
@@ -44,17 +66,17 @@ void Shader::GetShaderCode(std::ifstream& file)
 		if (line == "#fragment" || line == "#geometry")
 			break;
 		else
-			shaderData.vertexShader += line + "\n";
+			shaderData.vertexShader += ReplaceMacros(line) + "\n";
 
 	if (line == "#geometry")
 		while (std::getline(file, line))
 			if (line == "#fragment")
 				break;
 			else
-				shaderData.geometryShader += line + "\n";
+				shaderData.geometryShader += ReplaceMacros(line) + "\n";
 
 	while (std::getline(file, line))
-		shaderData.fragmentShader += line + "\n";
+		shaderData.fragmentShader += ReplaceMacros(line) + "\n";
 
 }
 

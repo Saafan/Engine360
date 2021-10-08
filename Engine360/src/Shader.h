@@ -19,6 +19,7 @@ public:
 	~Shader();
 	void Bind();
 
+	void Report();
 	const char* GetName();
 	unsigned int GetProgramID();
 	std::vector<UniformBase*> uniforms;

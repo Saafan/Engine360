@@ -11,7 +11,7 @@
 class UniformBase
 {
 public:
-	UniformBase(const char* name, Shader* shader, bool isStatic);
+	UniformBase(const char* name, Shader* shader, unsigned int count, bool isStatic);
 	UniformBase() = default;
 	~UniformBase();
 	unsigned int GetUniformLocation();
@@ -20,7 +20,10 @@ public:
 protected:
 	const char* name = "NULL";
 	Shader* shader = nullptr;
+
 	unsigned int uniformLocation = 0;
+	unsigned int count = 1;
+
 	bool isStatic = false;
 };
 
@@ -29,9 +32,9 @@ template <typename type>
 class Uniform : public UniformBase
 {
 public:
-	Uniform(const char* name, type* dataPtr, Shader* shader, unsigned int count = 1, bool isStatic = false);
-	Uniform(const char* name, type& data, Shader* shader, unsigned int count = 1, bool isStatic = false);
-	Uniform(const char* name, type&& data, Shader* shader, unsigned int count = 1, bool isStatic = false);
+	Uniform(const char* name, type* dataPtr, Shader* shader = nullptr, unsigned int count = 1, bool isStatic = false);
+	Uniform(const char* name, type& data, Shader* shader = nullptr, unsigned int count = 1, bool isStatic = false);
+	Uniform(const char* name, type&& data, Shader* shader = nullptr, unsigned int count = 1, bool isStatic = false);
 	void AddShader(Shader* shader);
 	void SetData(type* dataPtr);
 	void SetData(type data);
@@ -53,12 +56,12 @@ void Uniform<type>::AddShader(Shader* shader)
 template <typename type>
 inline
 Uniform<type>::Uniform(const char* name, type* dataPtr, Shader* shader, unsigned int count, bool isStatic)
-	: UniformBase(name, shader, isStatic)
+	: UniformBase(name, shader, count, isStatic)
 {
 	data = dataPtr;
 	if (!isStatic)
 	{
-		if (shader == nullptr)
+		if (!shader)
 			for (const auto& shader : Renderer::Get().shaders)
 				shader->uniforms.emplace_back(this);
 		else
@@ -71,12 +74,12 @@ Uniform<type>::Uniform(const char* name, type* dataPtr, Shader* shader, unsigned
 template <typename type>
 inline
 Uniform<type>::Uniform(const char* name, type& data, Shader* shader, unsigned int count, bool isStatic)
-	: UniformBase(name, shader, isStatic)
+	: UniformBase(name, shader, count, isStatic)
 {
 	this->data = &data;
 	if (!isStatic)
 	{
-		if (shader == nullptr)
+		if (!shader)
 			for (const auto& shader : Renderer::Get().shaders)
 				shader->uniforms.emplace_back(this);
 		else
@@ -89,12 +92,12 @@ Uniform<type>::Uniform(const char* name, type& data, Shader* shader, unsigned in
 template <typename type>
 inline
 Uniform<type>::Uniform(const char* name, type&& data, Shader* shader, unsigned int count, bool isStatic)
-	: UniformBase(name, shader, isStatic)
+	: UniformBase(name, shader, count, isStatic)
 {
 	this->data = new type(data);
 	if (!isStatic)
 	{
-		if (shader == nullptr)
+		if (!shader)
 			for (const auto& shader : Renderer::Get().shaders)
 				shader->uniforms.emplace_back(this);
 		else
@@ -118,42 +121,42 @@ template <>
 inline
 void Uniform<int>::UpdateShaderUniformHelper()
 {
-	glUniform1i(uniformLocation, *data);
+	glUniform1iv(uniformLocation, count, data);
 }
 
 template <>
 inline
 void Uniform<unsigned int>::UpdateShaderUniformHelper()
 {
-	glUniform1ui(uniformLocation, *data);
+	glUniform1uiv(uniformLocation, count, data);
 }
 
 template <>
 inline
 void Uniform<float>::UpdateShaderUniformHelper()
 {
-	glUniform1f(uniformLocation, *data);
+	glUniform1fv(uniformLocation, count, data);
 }
 
 template <>
 inline
 void Uniform<glm::vec3>::UpdateShaderUniformHelper()
 {
-	glUniform3f(uniformLocation, data->x, data->y, data->z);
+	glUniform3fv(uniformLocation, count, glm::value_ptr(*data));
 }
 
 template <>
 inline
 void Uniform<glm::vec4>::UpdateShaderUniformHelper()
 {
-	glUniform4f(uniformLocation, data->x, data->y, data->z, data->w);
+	glUniform4fv(uniformLocation, count, glm::value_ptr(*data));
 }
 
 template <>
 inline
 void Uniform<glm::mat4>::UpdateShaderUniformHelper()
 {
-	glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(*data));
+	glUniformMatrix4fv(uniformLocation, count, GL_FALSE, glm::value_ptr(*data));
 }
 
 template <typename type>

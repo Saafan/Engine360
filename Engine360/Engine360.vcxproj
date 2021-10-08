@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\Helpers\Printer.cpp" />
+    <ClCompile Include="src\Light.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Material.cpp" />
     <ClCompile Include="src\Model.cpp" />
@@ -36,6 +37,7 @@
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\Data\ModelVertices.h" />
     <ClInclude Include="src\Helpers\Printer.h" />
+    <ClInclude Include="src\Light.h" />
     <ClInclude Include="src\Material.h" />
     <ClInclude Include="src\Model.h" />
     <ClInclude Include="src\Renderer\Renderer.h" />

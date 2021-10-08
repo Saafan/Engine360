@@ -25,20 +25,20 @@ glm::vec2 GetDeltaMouse()
 	return glm::vec2((*newX - oldX), (*newY - oldY));
 }
 
-Camera::Camera()
+Camera::Camera() : view(glm::mat4(1.0f)), proj(glm::mat4(1.0f))
 {
-	view = new glm::mat4(1.0f);
-	proj = new glm::mat4(1.0f);
-
 	viewProjBlock = new UniformBlock("Matrices", 0, nullptr, false);
-	viewProjBlock->InsertData("proj", glm::value_ptr(*proj), sizeof(*proj));
-	viewProjBlock->InsertData("view", glm::value_ptr(*view), sizeof(*view));
+	viewProjBlock->InsertData<glm::mat4>("proj", glm::value_ptr(proj));
+	viewProjBlock->InsertData<glm::mat4>("view", glm::value_ptr(view));
+
+	uniformCameraPos = new Uniform<glm::vec3>(SHADER_CAMERA_POS, cameraPos, Renderer::Get().curShader);
+
 	viewProjBlock->Bind();
 }
 
 void Camera::Bind()
 {
-	*proj = glm::perspective(glm::radians(60.0f), (float)WIDTH / (float)HEIGHT, 0.0001f, 1000.0f);
+	proj = glm::perspective(glm::radians(60.0f), (float)WIDTH / (float)HEIGHT, 0.0001f, 1000.0f);
 	Renderer::Get().curCamera = this;
 }
 
@@ -76,15 +76,15 @@ void Camera::Shoot()
 
 	glfwSetKeyCallback(Renderer::Get().window, key_callback);
 
-	*view = glm::lookAt(cameraPos, cameraPos + dir, glm::vec3(0.0f, 1.0f, 0.0f));
+	view = glm::lookAt(cameraPos, cameraPos + dir, glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 glm::mat4& Camera::GetProjectionMatrix()
 {
-	return *proj;
+	return proj;
 }
 
 glm::mat4& Camera::GetViewMatrix()
 {
-	return *view;
+	return view;
 }

@@ -2,11 +2,17 @@
 #include "Shader.h"
 #include "glm/glm.hpp"
 
-UniformBase::UniformBase(const char* name, Shader* shader, bool isStatic)
+UniformBase::UniformBase(const char* name, Shader* shader, unsigned int count, bool isStatic)
 {
 	this->name = name;
 	this->isStatic = isStatic;
-	this->shader = shader;
+
+	if (!shader)
+		shader = Renderer::Get().curShader;
+	else
+		this->shader = shader;
+
+	this->count = count;
 	uniformLocation = GetUniformLocation();
 	if (uniformLocation == -1)
 		std::cout << "Uniform " << name << " doesn't exist in Shader[ " << shader->GetName() << " ]" << std::endl;

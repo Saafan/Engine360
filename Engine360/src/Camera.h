@@ -17,11 +17,10 @@ public:
 	glm::mat4& GetViewMatrix();
 
 private:
-	glm::mat4* view;
-	glm::mat4* proj;
+	glm::mat4 view;
+	glm::mat4 proj;
 	double yaw = -90.0, pitch = 0.0;
 
-	//Uniform<glm::mat4>* u_proj = nullptr, * u_view = nullptr;
-	//Uniform<glm::vec3>* u_cameraPos= nullptr;
+	Uniform<glm::vec3>* uniformCameraPos= nullptr;
 	UniformBlock* viewProjBlock;
 };
