@@ -37,10 +37,10 @@ int main()
 	Texture tex("images/container.png");
 	tex.Bind();
 
-	Light::PointLight(glm::vec3(3.0f), &shader);
 
-	Uniform<glm::vec3> lightPosUniform("lightPos", glm::vec3(2, 2, 2), Renderer::Get().curShader, true);
 
+	Light::PointLight pointLight(glm::vec3(2.0f), &shader);
+	
 	while (!glfwWindowShouldClose(window))
 	{
 		glfwPollEvents();

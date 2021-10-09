@@ -79,20 +79,20 @@ struct SpotLight {
 
 layout(std140) uniform pointLightsBlock
 {
-	int numOfLights;
-	PointLight pointLight[MAX_NR_LIGHTS];
+	int numOfPointLights;
+	PointLight pointLights[MAX_NR_LIGHTS];
 };
 
 layout(std140) uniform dirLightsBlock
 {
 	int numOfDirectionalLight;
-	DirLight dirLight[MAX_NR_LIGHTS];
+	DirLight dirLights[MAX_NR_LIGHTS];
 };
 
 layout(std140) uniform spotLightBlock
 {
 	int numOfSpotLight;
-	SpotLight spotLight[MAX_NR_LIGHTS];
+	SpotLight spotLights[MAX_NR_LIGHTS];
 };
 
 out vec4 color;
@@ -102,7 +102,6 @@ in vec3 i_normal;
 in vec2 i_tex;
 
 uniform vec3 cameraPos;
-uniform vec3 lightPos;
 
 uniform sampler2D textureSlot;
 
@@ -115,9 +114,9 @@ void main()
 {
 	vec4 ambientColor = texture(textureSlot, i_tex);
 
-	float diffuse = max(dot(normalize(i_normal), normalize(lightPos - i_pos.xyz)), 0);
+	float diffuse = max(dot(normalize(i_normal), normalize(pointLights[0].position - i_pos.xyz)), 0);
 	vec4 diffMap = diffuse * texture(textureSlot, i_tex);
-	float specular = pow(max(dot(normalize(cameraPos - i_pos.xyz), normalize(reflect(-(lightPos - i_pos.xyz), i_normal))), 0), SPECULAR_EXPONENT);
+	float specular = pow(max(dot(normalize(cameraPos - i_pos.xyz), normalize(reflect(-(pointLights[0].position - i_pos.xyz), i_normal))), 0), SPECULAR_EXPONENT);
 	vec4 specMap = specular * texture(textureSlot, i_tex);
 	vec4 result = (specMap + diffMap + ambientColor);
 	color = result;

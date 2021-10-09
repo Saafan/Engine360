@@ -43,27 +43,23 @@ void UniformBlock::UpdateBlockUniform()
 {
 	for (auto& uniformBlock : blockData)
 	{
-		SignleUniform& singleUniform = uniformBlock.second;
+		SingleUniform& singleUniform = uniformBlock.second;
 		if (memcmp(singleUniform.data, singleUniform.oldData, singleUniform.size) == 0)
 			continue;
-		memcpy(singleUniform.oldData, singleUniform.data, singleUniform.size);
-		EditData(uniformBlock.first, singleUniform.data);
+		memcpy(singleUniform.oldData, singleUniform.data, singleUniform.actualSize);
+		EditData(singleUniform, singleUniform.data);
 	}
 }
 
-void UniformBlock::EditData(const char* name, const void* data)
+void UniformBlock::EditData(SingleUniform& uniform, const void* data)
 {
-	SignleUniform& uniform = blockData[name];
 	glBindBuffer(GL_UNIFORM_BUFFER, ubID);
 	void* ptr = glMapBufferRange(GL_UNIFORM_BUFFER, uniform.sizeBefore, uniform.size, GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_RANGE_BIT);
-	memcpy(ptr, data, uniform.size);
+	if (!ptr)
+		glCheckError();
+	memcpy(ptr, data, uniform.actualSize);
 	glUnmapBuffer(GL_UNIFORM_BUFFER);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
-}
-
-void UniformBlock::SetShader(Shader* shader)
-{
-	
 }
 
 void UniformBlock::Bind()
@@ -74,14 +70,19 @@ void UniformBlock::Bind()
 	glBufferData(GL_UNIFORM_BUFFER, blockSize, NULL, drawingFlag);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
-	glBindBufferRange(GL_UNIFORM_BUFFER, 0, ubID, 0, blockSize);
+	glBindBufferRange(GL_UNIFORM_BUFFER, bindingPoint, ubID, 0, blockSize);
 
 	size_t offset = 0;
 	for (const auto& data : blockData)
 	{
 		glBindBuffer(GL_UNIFORM_BUFFER, ubID);
 		glBufferSubData(GL_UNIFORM_BUFFER, offset, data.second.size, data.second.data);
-		offset += data.second.size;
+		offset += data.second.size >= 16 ? data.second.size : 16;
 	}
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+}
+
+void UniformBlock::UnBind()
+{
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }

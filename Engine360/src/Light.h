@@ -11,7 +11,7 @@ namespace Light
 	{
 	public:
 		PointLight(glm::vec3 lightPosition, Shader* shader = nullptr);
-		PointLight(glm::vec3 lightPosition);
+		PointLight();
 
 		void SetAmbient(glm::vec3 ambientColor);
 		void SetDiffuse(glm::vec3 diffuseColor);

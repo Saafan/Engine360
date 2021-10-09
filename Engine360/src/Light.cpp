@@ -1,28 +1,15 @@
 #include "Light.h"
 #include "Renderer/Renderer.h"
+
+#include "glm/gtc/type_ptr.hpp"
+
 using namespace Light;
 
 int PointLight::numOfPointLights = 0;
 int PointLight::numOfSpotLights = 0;
 int PointLight::numOfDirectionalLights = 0;
 
-//layout(std140) uniform pointLightsBlock
-//{
-//	PointLight pointLight[MAX_NR_LIGHTS];
-//};
-//
-//layout(std140) uniform dirLightsBlock
-//{
-//	DirLight dirLight[MAX_NR_LIGHTS];
-//};
-//
-//layout(std140) uniform spotLightBlock
-//{
-//	SpotLight spotLight[MAX_NR_LIGHTS];
-//};
 
-
-//UniformBlock* 
 UniformBlock* PointLight::spotLightBlock = nullptr;
 UniformBlock* PointLight::pointLightBlock = nullptr;
 UniformBlock* PointLight::directionLightBlock = nullptr;
@@ -35,30 +22,34 @@ PointLight::PointLight(glm::vec3 lightPosition, Shader* shader)
 	if (!pointLightBlock)
 	{
 		pointLightBlock = new UniformBlock(SHADER_POINT_LIGHT_BLOCK, SHADER_POINT_LIGHT_BINDING_POINT, shader, false);
-		pointLightBlock->InsertData<int>("numOfLights",&numOfPointLights);
+		pointLightBlock->InsertData<int>("numOfLights", &numOfPointLights);
 	}
 
-	pointLightBlock->InsertData<glm::vec3>("position", &lightPos);
+	pointLightBlock->InsertData<glm::vec3>("position", glm::value_ptr(lightPos));
 
 	pointLightBlock->InsertData<float>("constant", &constant);
 	pointLightBlock->InsertData<float>("linear", &linear);
 	pointLightBlock->InsertData<float>("quadratic", &quadratic);
 
-	pointLightBlock->InsertData<glm::vec3>("ambient", &ambient);
-	pointLightBlock->InsertData<glm::vec3>("diffuse", &diffuse);
-	pointLightBlock->InsertData<glm::vec3>("specular", &specular);
+	pointLightBlock->InsertData<glm::vec3>("ambient", glm::value_ptr(ambient));
+	pointLightBlock->InsertData<glm::vec3>("diffuse", glm::value_ptr(diffuse));
+	pointLightBlock->InsertData<glm::vec3>("specular", glm::value_ptr(specular));
 
 	pointLightBlock->Bind();
 }
 
-PointLight::PointLight(glm::vec3 lightPosition)
-	: lightPos(lightPosition)
+PointLight::PointLight()
+	: ambient(glm::vec3(1.0f)), diffuse(glm::vec3(1.0f)), specular(glm::vec3(1.0f)), lightPos(glm::vec3(1.0f))
 {
 
 }
 
 DirectionalLight::DirectionalLight(glm::vec3 lightPosition, glm::vec3 lightDirection, Shader* shader)
+	: PointLight(), direction(lightDirection)
 {
+	this->lightPos = lightPosition;
+	this->direction = lightDirection;
+
 	numOfDirectionalLights++;
 	if (!directionLightBlock)
 	{

@@ -27,11 +27,11 @@ glm::vec2 GetDeltaMouse()
 
 Camera::Camera() : view(glm::mat4(1.0f)), proj(glm::mat4(1.0f))
 {
+	uniformCameraPos = new Uniform<glm::vec3>(SHADER_CAMERA_POS, cameraPos, Renderer::Get().curShader);
 	viewProjBlock = new UniformBlock("Matrices", 0, nullptr, false);
 	viewProjBlock->InsertData<glm::mat4>("proj", glm::value_ptr(proj));
 	viewProjBlock->InsertData<glm::mat4>("view", glm::value_ptr(view));
 
-	uniformCameraPos = new Uniform<glm::vec3>(SHADER_CAMERA_POS, cameraPos, Renderer::Get().curShader);
 
 	viewProjBlock->Bind();
 }
