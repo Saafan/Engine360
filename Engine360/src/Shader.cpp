@@ -80,6 +80,16 @@ void Shader::GetShaderCode(std::ifstream& file)
 
 }
 
+const char* GetShaderTypeName(unsigned int shaderType)
+{
+	if (shaderType == GL_FRAGMENT_SHADER)
+		return "Fragment Shader";
+	if (shaderType == GL_VERTEX_SHADER)
+		return "Vertex Shader";
+	if (shaderType == GL_GEOMETRY_SHADER)
+		return "Geometry Shader";
+}
+
 unsigned int Shader::CompileShader(std::string& srcCode, unsigned int shaderType)
 {
 	unsigned int shader = glCreateShader(shaderType);
@@ -96,7 +106,9 @@ unsigned int Shader::CompileShader(std::string& srcCode, unsigned int shaderType
 		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &size);
 		char* message = (char*)malloc(size * sizeof(char));
 		glGetShaderInfoLog(shader, size * sizeof(char), nullptr, message);
-		std::cout << "Message: " << "File: " << shaderName << "  " << message << std::endl;
+		const char* shaderTypeName = GetShaderTypeName(shaderType);
+		
+		std::cout << "Message: " << "File: " << shaderName  << "  " << shaderTypeName << message << std::endl;
 	}
 	return shader;
 }
