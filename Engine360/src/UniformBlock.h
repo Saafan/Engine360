@@ -4,6 +4,7 @@
 
 class Shader;
 #include "glm/fwd.hpp"
+#include "GL/glew.h"
 
 struct SingleUniform
 {
@@ -11,8 +12,10 @@ struct SingleUniform
 	{
 		this->data = data, this->size = size, this->sizeBefore = sizeBefore, this->actualSize = actualSize;
 		oldData = malloc(size);
-		memcpy(oldData, data, actualSize);
+		if (oldData != nullptr)
+			memcpy(oldData, data, actualSize);
 	}
+
 	SingleUniform() = default;
 	const void* data = nullptr;
 	void* oldData = nullptr;
@@ -42,7 +45,7 @@ private:
 	const char* blockName = "";
 
 	std::vector<std::pair<const char*, SingleUniform>> blockData;
-	unsigned int drawingFlag = 0x88E4;
+	unsigned int drawingFlag = GL_STATIC_DRAW;
 	size_t blockSize = 0;
 };
 

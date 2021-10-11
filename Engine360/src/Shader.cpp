@@ -39,7 +39,7 @@ void Shader::Bind()
 
 void Shader::Report()
 {
-	std::cout << "Name: "<< shaderName << std::endl;
+	std::cout << "Name: " << shaderName << std::endl;
 	std::cout << "Vertex Shader: " << shaderData.vertexShader << std::endl << std::endl;
 	std::cout << "Geometry Shader: " << shaderData.geometryShader << std::endl << std::endl;
 	std::cout << "Fragment Shader: " << shaderData.fragmentShader << std::endl << std::endl;
@@ -86,7 +86,7 @@ const char* GetShaderTypeName(unsigned int shaderType)
 		return "Fragment Shader";
 	if (shaderType == GL_VERTEX_SHADER)
 		return "Vertex Shader";
-	if (shaderType == GL_GEOMETRY_SHADER)
+	else
 		return "Geometry Shader";
 }
 
@@ -107,8 +107,8 @@ unsigned int Shader::CompileShader(std::string& srcCode, unsigned int shaderType
 		char* message = (char*)malloc(size * sizeof(char));
 		glGetShaderInfoLog(shader, size * sizeof(char), nullptr, message);
 		const char* shaderTypeName = GetShaderTypeName(shaderType);
-		
-		std::cout << "Message: " << "File: " << shaderName  << "  " << shaderTypeName << message << std::endl;
+
+		std::cout << "Message: " << "File: " << shaderName << "  " << shaderTypeName << message << std::endl;
 	}
 	return shader;
 }
