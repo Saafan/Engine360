@@ -37,8 +37,6 @@ int main()
 	Texture tex("images/container.png");
 	tex.Bind();
 
-
-
 	Light::PointLight pointLight(glm::vec3(2.0f), &shader);
 	
 	while (!glfwWindowShouldClose(window))

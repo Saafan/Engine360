@@ -4,7 +4,7 @@ layout(location = 0) in vec3 pos;
 layout(location = 1) in vec3 normal;
 layout(location = 2) in vec2 tex;
 
-out vec4 i_pos;
+out vec3 i_pos;
 out vec3 i_normal;
 out vec2 i_tex;
 
@@ -20,7 +20,7 @@ void main()
 {
 	mat4 mvp = proj * view * model;
 	gl_Position = mvp * vec4(pos, 1.0);
-	i_pos = model * vec4(pos, 1.0);
+	i_pos = (model * vec4(pos, 1.0)).xyz;
 	i_normal = mat3(transpose(inverse(model))) * normal;
 
 	i_tex = tex;
@@ -97,7 +97,7 @@ layout(std140) uniform spotLightBlock
 
 out vec4 color;
 
-in vec4 i_pos;
+in vec3 i_pos;
 in vec3 i_normal;
 in vec2 i_tex;
 
@@ -110,14 +110,31 @@ const int HEIGHT = 1080;
 const int SPECULAR_EXPONENT = 32;
 uniform vec4 colorOut;
 
+vec4 CalculatePointLight(PointLight pointLight)
+{
+	vec3 fragToLightDir = normalize(pointLight.position - i_pos);
+
+	vec3 ambient = pointLight.ambient * texture(textureSlot, i_tex).xyz;
+
+	float diffuse = max(dot(normalize(i_normal), fragToLightDir), 0);
+	vec4 diffMap = diffuse * texture(textureSlot, i_tex);
+	float specular = pow(max(dot(normalize(cameraPos - i_pos), normalize(reflect(-fragToLightDir, i_normal))), 0), SPECULAR_EXPONENT);
+	vec4 specMap = specular * texture(textureSlot, i_tex);
+	vec4 result = (specMap + diffMap + vec4(ambient,1.0f));
+	return result;
+}
+
+//vec3 CalculateDirectionalLight(DirLight dirLight)
+//{
+//
+//}
+
+//vec3 CalculateSpotLight(SpotLight spotLight)
+//{
+//
+//}
+
 void main()
 {
-	vec4 ambientColor = texture(textureSlot, i_tex);
-
-	float diffuse = max(dot(normalize(i_normal), normalize(pointLights[0].position - i_pos.xyz)), 0);
-	vec4 diffMap = diffuse * texture(textureSlot, i_tex);
-	float specular = pow(max(dot(normalize(cameraPos - i_pos.xyz), normalize(reflect(-(pointLights[0].position - i_pos.xyz), i_normal))), 0), SPECULAR_EXPONENT);
-	vec4 specMap = specular * texture(textureSlot, i_tex);
-	vec4 result = (specMap + diffMap + ambientColor);
-	color = result;
+	color = CalculatePointLight(pointLights[0]);
 }

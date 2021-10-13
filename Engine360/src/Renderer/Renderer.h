@@ -12,10 +12,10 @@
 #include "glm/fwd.hpp"
 #include "UniformBlock.h"
 
-const int WIDTH = 1920;
-const int HEIGHT = 1080;
-const float CAMERA_SPEED = 0.05f;
-const float CAMERA_MOTION_SPEED = 0.5f;
+constexpr int WIDTH = 1920;
+constexpr int HEIGHT = 1080;
+constexpr float CAMERA_SPEED = 0.05f;
+constexpr float CAMERA_MOTION_SPEED = 0.5f;
 
 #define SHADER_MODEL "model"
 #define SHADER_VIEW "view"

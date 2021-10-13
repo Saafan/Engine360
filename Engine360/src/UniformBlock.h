@@ -4,7 +4,7 @@
 
 class Shader;
 #include "glm/fwd.hpp"
-#include "GL/glew.h"
+#include "Helpers/Printer.h"
 
 struct SingleUniform
 {
@@ -20,8 +20,10 @@ struct SingleUniform
 	const void* data = nullptr;
 	void* oldData = nullptr;
 	size_t size = 0;
-	size_t actualSize = 0;
 	size_t sizeBefore = 0;
+
+	size_t actualSize = 0;
+	GLenum dataType = 0;
 };
 
 class UniformBlock
@@ -39,6 +41,8 @@ public:
 	void UnBind();
 
 	void UpdateBlockUniform();
+
+	void Report();
 private:
 	unsigned int ubID = 0;
 	unsigned int bindingPoint = 0;
@@ -57,7 +61,9 @@ void UniformBlock::InsertData(const char* uniformName, const void* data)
 	if (typeid(T) == typeid(glm::vec3))
 		size = sizeof(glm::vec4);
 	SingleUniform singleUniform{ data, size, blockSize, sizeof(T) };
-	blockData.emplace_back(std::pair<const char*, SingleUniform>(uniformName, singleUniform));
 
+	singleUniform.dataType = ConvertTypeToGLType<T>().type;
+
+	blockData.emplace_back(std::pair<const char*, SingleUniform>(uniformName, singleUniform));
 	blockSize += size >= 16 ? size : 16;
 }

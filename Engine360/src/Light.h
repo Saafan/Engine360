@@ -17,10 +17,10 @@ namespace Light
 		void SetDiffuse(glm::vec3 diffuseColor);
 		void SetSpecular(glm::vec3 specularColor);
 
-		void SetAttenuation(float constant, float linear, float quadratic);
-		void SetConstant(float constant);
-		void SetLinear(float linear);
-		void SetQuadratic(float quadratic);
+		void SetAttenuation(const float constant, const float linear, const float quadratic);
+		void SetConstant(const float constant);
+		void SetLinear(const float linear);
+		void SetQuadratic(const float quadratic);
 
 	protected:
 		static UniformBlock* pointLightBlock;
@@ -41,13 +41,13 @@ namespace Light
 
 		glm::vec3 lightPos;
 
-		void SetLightPosition(glm::vec3 lightPosition);
+		void SetLightPosition(const glm::vec3 lightPosition);
 	};
 
 	class SpotLight : public PointLight
 	{
 	public:
-		SpotLight(glm::vec3 lightPosition, glm::vec3 lightDirection, float innerCutOff = 40.0f, float outerCufOff = 60.0f,Shader* shader = nullptr);
+		SpotLight(glm::vec3 lightPosition, glm::vec3 lightDirection, float innerCutOff = 40.0f, float outerCufOff = 60.0f, Shader* shader = nullptr);
 		void SetLightDirection(glm::vec3 lightDirection);
 		void SetInnerCutOff(float innerCutOff);
 		void SetOuterCutOff(float outerCutOff);

@@ -111,6 +111,7 @@ Uniform<type>::Uniform(const char* name, type&& data, Shader* shader, unsigned i
 template <typename type>
 void Uniform<type>::UpdateShaderUniform()
 {
+	//#TODO Make memcpy instead of Uniform Equals
 	if (UniformEquals(*data, oldData))
 		return;
 	oldData = *data;
