@@ -52,36 +52,10 @@ void UniformBlock::UpdateBlockUniform()
 
 void UniformBlock::Report()
 {
-	//#TODO MAKE UNIFORM BLOCK TEMPALTE
-
 	for (const auto& data : blockData)
 	{
 		std::cout << "Name: " << data.first << "\nData: " << std::endl;
-		const auto dataType = data.second.dataType;
-		const auto value = data.second.data;
-		if (dataType == GL_FLOAT)
-			std::cout << *(float*)(value) << std::endl;
-		if (dataType == GL_INT)
-			std::cout << *(int*)(value) << std::endl;
-		if (dataType == GL_UNSIGNED_INT)
-			std::cout << *(unsigned int*)(value) << std::endl;
-		if (dataType == GL_DOUBLE)
-			std::cout << *(double*)(value) << std::endl;
-		if (dataType == GL_VEC3)
-		{
-			const glm::vec3 valueVector = *(glm::vec3*)(data.second.data);
-			std::cout << "(x: " << valueVector.x << ", y:" << valueVector.y << ", z:" << valueVector.z << ")" << std::endl;
-		}
-		if (dataType == GL_VEC4)
-		{
-			const glm::vec4 valueVector = *(glm::vec4*)(data.second.data);
-			std::cout << "(x: " << valueVector.x << ", y:" << valueVector.y << ", z:" << valueVector.z << ", w: " << valueVector.w << ")" << std::endl;
-		}
-		if (dataType == GL_MAT4)
-		{
-			const glm::mat4 valueVector = *(glm::mat4*)(data.second.data);
-			PrintMatrix(valueVector);
-		}
+		PrintValue(data.second.dataType, data.second.data);
 	}
 }
 

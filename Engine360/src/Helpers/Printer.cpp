@@ -41,51 +41,34 @@ void PrintMatrix(glm::mat4 matrix) {
 	}
 }
 
-bool UniformEquals(int v1, int v2)
-{
-	return v1 == v2;
-}
 
-bool UniformEquals(unsigned int v1, unsigned int v2)
+void PrintValue(GLenum dataType, const void* value)
 {
-	return v1 == v2;
+	switch (dataType)
+	{
+	case GL_FLOAT:
+		std::cout << *(float*)(value) << std::endl;
+		break;
+	case GL_INT:
+		std::cout << *(int*)(value) << std::endl;
+		break;
+	case GL_UNSIGNED_INT:
+		std::cout << *(unsigned int*)(value) << std::endl;
+		break;
+	case GL_DOUBLE:
+		std::cout << *(double*)(value) << std::endl;
+		break;
+	case GL_VEC3:
+		const glm::vec3 valueVector3 = *(glm::vec3*)(value);
+		std::cout << "(x: " << valueVector3.x << ", y:" << valueVector3.y << ", z:" << valueVector3.z << ")" << std::endl;
+		break;
+	case GL_VEC4:
+		const glm::vec4 valueVector4 = *(glm::vec4*)(value);
+		std::cout << "(x: " << valueVector4.x << ", y:" << valueVector4.y << ", z:" << valueVector4.z << ", w: " << valueVector4.w << ")" << std::endl;
+		break;
+	case GL_MAT4:
+		const glm::mat4 valueMatrix = *(glm::mat4*)(value);
+		PrintMatrix(valueMatrix);
+		break;
+	}
 }
-
-bool UniformEquals(float v1, float v2)
-{
-	return v1 == v2;
-}
-
-bool UniformEquals(glm::vec2 v1, glm::vec2 v2)
-{
-	return (v1.x == v2.x && v1.y == v2.y);
-}
-
-bool UniformEquals(glm::vec3 v1, glm::vec3 v2)
-{
-	return (v1.x == v2.x && v1.y == v2.y && v1.z == v2.z);
-}
-
-bool UniformEquals(glm::vec4 v1, glm::vec4 v2)
-{
-	return (v1.x == v2.x && v1.y == v2.y && v1.z == v2.z && v1.w == v2.w);
-}
-
-bool UniformEquals(glm::mat3 v1, glm::mat3 v2)
-{
-	for (size_t i = 0; i < 3; i++)
-		for (size_t j = 0; j < 3; j++)
-			if (v1[i][j] != v2[i][j])
-				return false;
-	return true;
-}
-
-bool UniformEquals(glm::mat4 v1, glm::mat4 v2)
-{
-	for (size_t i = 0; i < 4; i++)
-		for (size_t j = 0; j < 4; j++)
-			if (v1[i][j] != v2[i][j])
-				return false;
-	return true;
-}
-

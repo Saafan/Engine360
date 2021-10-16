@@ -35,6 +35,8 @@ PointLight::PointLight(glm::vec3 lightPosition, Shader* shader)
 	pointLightBlock->InsertData<glm::vec3>("diffuse", glm::value_ptr(diffuse));
 	pointLightBlock->InsertData<glm::vec3>("specular", glm::value_ptr(specular));
 
+	pointLightBlock->Report();
+
 	pointLightBlock->Bind();
 }
 
